@@ -1,6 +1,14 @@
 import './App.css'
+import { ChatRoom } from './components/ChatRoom'
+import { useState } from 'react'
 
 function App() {
+  const [currentView, setCurrentView] = useState('landing')
+
+  if (currentView === 'chat') {
+    return <ChatRoom />
+  }
+
   return (
     <div className="landing">
       <nav className="navbar">
@@ -10,7 +18,7 @@ function App() {
             <span className="logo-text">Guardian</span>
           </div>
           <div className="nav-links">
-            <a href="#demo">Demo</a>
+            <button onClick={() => setCurrentView('chat')}>Live Chat Demo</button>
             <a href="#portal">Portal</a>
             <a href="#docs">Docs</a>
           </div>
@@ -25,11 +33,13 @@ function App() {
             <br />for game chats
           </h1>
           <p className="hero-subtitle">
-            Guardian monitors live game chats, detects grooming risk at the conversation level, 
+            Guardian monitors live game chats, detects grooming risk at the conversation level,
             and intervenes with safety pauses, inline highlights, and guardian alert feeds.
           </p>
           <div className="hero-cta">
-            <button className="btn-primary">View Live Demo</button>
+            <button className="btn-primary" onClick={() => setCurrentView('chat')}>
+              View Live Demo
+            </button>
             <button className="btn-secondary">Guardian Portal →</button>
           </div>
         </div>

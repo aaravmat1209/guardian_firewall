@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@colyseus/core": "^0.16.21",
+    "colyseus": "^0.16.4",
+    "concurrently": "^9.2.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0"
+  }
+}
