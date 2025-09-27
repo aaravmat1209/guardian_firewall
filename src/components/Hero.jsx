@@ -16,51 +16,63 @@ const Hero = () => {
   return (
     <section className="hero">
       <div className="hero-container">
-        <div className="hero-content">
-          {/* Main Heading - EXACT Quantra structure */}
-          <h1 className={`hero-title ${isVisible ? 'animate' : ''}`}>
-            <span className="hero-title-line">
-              GUARDIAN AI:
-            </span>
-            <span className="hero-title-line hero-title-accent">
-              PROTECTING CHILDREN
-            </span>
-            <span className="hero-title-line">
-              WHERE HARM BEGINS
-            </span>
-          </h1>
-
-          {/* Subtitle - EXACT Quantra positioning */}
-          <p className={`hero-subtitle ${isVisible ? 'animate' : ''}`}>
-            Advanced AI monitoring for gaming chat platforms. Real-time threat detection 
-            and intelligent content filtering to keep children safe in digital environments.
-          </p>
-
-          {/* Action Buttons - EXACT Quantra layout */}
-          <div className={`hero-actions ${isVisible ? 'animate' : ''}`}>
-            <a href="#demo" className="btn btn-primary hero-btn-primary">
-              SEE DEMO
-            </a>
-            <a href="#features" className="btn btn-secondary hero-btn-secondary">
-              LEARN MORE
-            </a>
+        <div className="hero-layout">
+          {/* Logo Section - Left Side */}
+          <div className={`hero-logo ${isVisible ? 'animate' : ''}`}>
+            <img 
+              src="/guardian-logo-new.png" 
+              alt="Guardian AI Logo" 
+              className="hero-logo-image"
+            />
           </div>
 
-          {/* Stats - EXACT Quantra style */}
-          <div className={`hero-stats ${isVisible ? 'animate' : ''}`}>
-            <div className="hero-stat">
-              <div className="hero-stat-number">99.7%</div>
-              <div className="hero-stat-label">ACCURACY</div>
+          {/* Content Section - Right Side */}
+          <div className="hero-content">
+            {/* Main Heading - EXACT Quantra structure */}
+            <h1 className={`hero-title ${isVisible ? 'animate' : ''}`}>
+              <span className="hero-title-line">
+                GUARDIAN AI:
+              </span>
+              <span className="hero-title-line hero-title-accent">
+                PROTECTING CHILDREN
+              </span>
+              <span className="hero-title-line">
+                WHERE HARM BEGINS
+              </span>
+            </h1>
+
+            {/* Subtitle - EXACT Quantra positioning */}
+            <p className={`hero-subtitle ${isVisible ? 'animate' : ''}`}>
+              Advanced AI monitoring for gaming chat platforms. Real-time threat detection 
+              and intelligent content filtering to keep children safe in digital environments.
+            </p>
+
+            {/* Action Buttons - EXACT Quantra layout */}
+            <div className={`hero-actions ${isVisible ? 'animate' : ''}`}>
+              <a href="#demo" className="btn btn-primary hero-btn-primary">
+                SEE DEMO
+              </a>
+              <a href="#features" className="btn btn-secondary hero-btn-secondary">
+                LEARN MORE
+              </a>
             </div>
-            <div className="hero-stat-divider"></div>
-            <div className="hero-stat">
-              <div className="hero-stat-number">&lt;100MS</div>
-              <div className="hero-stat-label">RESPONSE TIME</div>
-            </div>
-            <div className="hero-stat-divider"></div>
-            <div className="hero-stat">
-              <div className="hero-stat-number">24/7</div>
-              <div className="hero-stat-label">MONITORING</div>
+
+            {/* Stats - EXACT Quantra style */}
+            <div className={`hero-stats ${isVisible ? 'animate' : ''}`}>
+              <div className="hero-stat">
+                <div className="hero-stat-number">99.7%</div>
+                <div className="hero-stat-label">ACCURACY</div>
+              </div>
+              <div className="hero-stat-divider"></div>
+              <div className="hero-stat">
+                <div className="hero-stat-number">&lt;100MS</div>
+                <div className="hero-stat-label">RESPONSE TIME</div>
+              </div>
+              <div className="hero-stat-divider"></div>
+              <div className="hero-stat">
+                <div className="hero-stat-number">24/7</div>
+                <div className="hero-stat-label">MONITORING</div>
+              </div>
             </div>
           </div>
         </div>
