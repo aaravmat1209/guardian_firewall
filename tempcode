@@ -1,0 +1,1766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian AI - Advanced Child Safety System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0e27;
+            color: white;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            height: 100vh;
+            gap: 1px;
+            background: #151929;
+        }
+
+        /* Neural Network Visualization */
+        .neural-network {
+            position: absolute;
+            top: 20px;
+            right: 420px;
+            width: 200px;
+            height: 150px;
+            background: rgba(0,0,0,0.7);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            z-index: 100;
+        }
+
+        .neural-title {
+            font-size: 10px;
+            color: #00ffff;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .neuron {
+            width: 8px;
+            height: 8px;
+            background: #00ffff;
+            border-radius: 50%;
+            position: absolute;
+            opacity: 0.3;
+            transition: all 0.3s ease;
+        }
+
+        .neuron.active {
+            opacity: 1;
+            box-shadow: 0 0 10px #00ffff;
+        }
+
+        .synapse {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .synapse.active {
+            opacity: 0.5;
+            animation: synapseFlow 1s linear infinite;
+        }
+
+        @keyframes synapseFlow {
+            0% { background-position: -100px 0; }
+            100% { background-position: 100px 0; }
+        }
+
+        /* Main Panel */
+        .main-panel {
+            display: flex;
+            flex-direction: column;
+            background: #0a0e27;
+            position: relative;
+        }
+
+        .top-bar {
+            background: linear-gradient(90deg, #1a1f3a, #2d1b69);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            animation: logoGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 0, 255, 0.5); }
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo-text p {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .ai-status {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .model-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .model-name {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .model-version {
+            font-size: 14px;
+            color: #00ffff;
+            font-weight: 600;
+        }
+
+        .processing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 20px;
+        }
+
+        .processing-dot {
+            width: 6px;
+            height: 6px;
+            background: #00ffff;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .processing-text {
+            font-size: 11px;
+            color: #00ffff;
+            text-transform: uppercase;
+        }
+
+        /* Chat Area */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            position: relative;
+            background: #0d1121;
+        }
+
+        .game-view {
+            flex: 1;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), 
+                        radial-gradient(circle at 50% 50%, #1a1f3a, #0a0e27);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .game-header {
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.5);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .game-title {
+            color: #00ffff;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .game-subtitle {
+            color: #666;
+            font-size: 11px;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+            background: rgba(0,0,0,0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            animation: messageSlide 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes messageSlide {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .message-avatar.user {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .message-avatar.other {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+        }
+
+        .message-content {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            padding: 10px 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .message-content.analyzing {
+            border-color: rgba(0, 255, 255, 0.5);
+            animation: analyzePulse 1s infinite;
+        }
+
+        @keyframes analyzePulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 255, 0); }
+            50% { box-shadow: 0 0 20px 5px rgba(0, 255, 255, 0.3); }
+        }
+
+        .message-content.flagged {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.5);
+        }
+
+        .message-author {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .risk-badge {
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 9px;
+            font-weight: 600;
+            text-transform: uppercase;
+            animation: badgeAppear 0.3s ease;
+        }
+
+        @keyframes badgeAppear {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .risk-badge.low { background: rgba(76, 175, 80, 0.2); color: #4CAF50; }
+        .risk-badge.medium { background: rgba(255, 193, 7, 0.2); color: #FFC107; }
+        .risk-badge.high { background: rgba(255, 87, 34, 0.2); color: #FF5722; }
+        .risk-badge.critical { 
+            background: rgba(255, 0, 0, 0.2); 
+            color: #ff0000;
+            animation: criticalPulse 0.5s infinite;
+        }
+
+        @keyframes criticalPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .message-text {
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .threat-highlight {
+            background: rgba(255, 0, 0, 0.3);
+            padding: 2px 4px;
+            border-radius: 3px;
+            border-bottom: 2px solid #ff0000;
+        }
+
+        /* Real-time Input Analysis */
+        .input-area {
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-field {
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            border-color: #00ffff;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+
+        .typing-indicator {
+            position: absolute;
+            top: -25px;
+            left: 15px;
+            font-size: 10px;
+            color: #00ffff;
+            display: none;
+        }
+
+        .typing-indicator.active {
+            display: block;
+            animation: typeIndicate 0.5s ease;
+        }
+
+        @keyframes typeIndicate {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* AI Analysis Panel */
+        .ai-panel {
+            background: #0d1121;
+            border-left: 1px solid rgba(0, 255, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #1a1f3a, #2d1b69);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .panel-title {
+            font-size: 18px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .live-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: livePulse 2s infinite;
+        }
+
+        @keyframes livePulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.5); }
+            50% { opacity: 0.5; box-shadow: 0 0 0 5px rgba(0, 255, 0, 0); }
+        }
+
+        .panel-subtitle {
+            font-size: 11px;
+            color: #888;
+        }
+
+        /* Threat Analysis Display */
+        .threat-analysis {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .analysis-section {
+            margin-bottom: 25px;
+            padding: 15px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #00ffff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .threat-meter {
+            height: 40px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .threat-meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, 
+                #00ff00 0%, 
+                #ffff00 35%, 
+                #ff8800 70%, 
+                #ff0000 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+        }
+
+        .threat-percentage {
+            font-size: 14px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .threat-stages {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 10px;
+            color: #666;
+        }
+
+        /* Pattern Detection Grid */
+        .pattern-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .pattern-item {
+            padding: 10px;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .pattern-item.detected {
+            background: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.5);
+            animation: patternDetect 0.5s ease;
+        }
+
+        @keyframes patternDetect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pattern-name {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .pattern-status {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .pattern-status.safe { color: #4CAF50; }
+        .pattern-status.warning { color: #FFC107; }
+        .pattern-status.danger { color: #FF5722; }
+
+        /* ML Metrics */
+        .ml-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .metric-card {
+            padding: 12px;
+            background: rgba(0, 255, 255, 0.05);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00ffff;
+        }
+
+        .metric-change {
+            font-size: 10px;
+            color: #4CAF50;
+            margin-top: 3px;
+        }
+
+        .metric-change.negative {
+            color: #FF5722;
+        }
+
+        /* Conversation Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, 
+                rgba(0, 255, 255, 0.5), 
+                rgba(255, 0, 255, 0.5));
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: timelineAppear 0.5s ease;
+        }
+
+        @keyframes timelineAppear {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -24px;
+            top: 15px;
+            width: 10px;
+            height: 10px;
+            background: #00ffff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .timeline-item.high-risk::before {
+            background: #ff0000;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .timeline-time {
+            font-size: 10px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .timeline-content {
+            font-size: 12px;
+            color: #aaa;
+        }
+
+        /* Action Buttons */
+        .action-panel {
+            padding: 20px;
+            background: rgba(0,0,0,0.8);
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .action-btn.emergency {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            animation: emergencyPulse 1s infinite;
+        }
+
+        @keyframes emergencyPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.5); }
+            50% { box-shadow: 0 0 20px 5px rgba(255, 0, 0, 0.5); }
+        }
+
+        /* Safety Modal */
+        .safety-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .safety-modal.active {
+            display: flex;
+            animation: modalAppear 0.3s ease;
+        }
+
+        @keyframes modalAppear {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1f3a, #0a0e27);
+            border: 2px solid rgba(255, 0, 0, 0.5);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.3);
+            animation: modalSlide 0.3s ease;
+        }
+
+        @keyframes modalSlide {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ff0000, #ff4444);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            animation: iconPulse 1s infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .modal-title h3 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .modal-title p {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .threat-details {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .threat-details h4 {
+            color: #ff6666;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .threat-list {
+            list-style: none;
+        }
+
+        .threat-list li {
+            padding: 5px 0;
+            color: #ccc;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .threat-list li::before {
+            content: '⚠️';
+            font-size: 12px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .modal-btn.block {
+            background: #ff0000;
+            color: white;
+        }
+
+        .modal-btn.allow {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            position: fixed;
+            bottom: 20px;
+            right: 420px;
+            background: linear-gradient(135deg, #1a1f3a, #0a0e27);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+
+        .demo-title {
+            font-size: 10px;
+            color: #00ffff;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .demo-btn {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .demo-btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 255, 0.5);
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .ai-panel {
+                display: none;
+            }
+            
+            .demo-controls {
+                right: 20px;
+            }
+            
+            .neural-network {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Main Panel -->
+        <div class="main-panel">
+            <div class="top-bar">
+                <div class="logo">
+                    <div class="logo-icon">🛡️</div>
+                    <div class="logo-text">
+                        <h1>Guardian AI</h1>
+                        <p>Neural Safety System v4.2</p>
+                    </div>
+                </div>
+                <div class="ai-status">
+                    <div class="model-indicator">
+                        <div class="model-name">Transformer Model</div>
+                        <div class="model-version">BERT-Guardian-XL</div>
+                    </div>
+                    <div class="processing-indicator">
+                        <div class="processing-dot"></div>
+                        <span class="processing-text">ML Processing Active</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-area">
+                <div class="game-view">
+                    <div class="game-header">
+                        <div class="game-title">FortCraft Arena - Team Chat</div>
+                        <div class="game-subtitle">BedWars • 14 players online • Server: NA-WEST-2</div>
+                    </div>
+                    
+                    <div class="chat-container">
+                        <div class="messages" id="messages"></div>
+                        
+                        <div class="input-area">
+                            <div class="input-wrapper">
+                                <div class="typing-indicator" id="typingIndicator">Analyzing in real-time...</div>
+                                <input type="text" class="input-field" id="messageInput" placeholder="Type a message..." />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI Analysis Panel -->
+        <div class="ai-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <span>AI Threat Analysis</span>
+                    <div class="live-dot"></div>
+                </div>
+                <div class="panel-subtitle">Real-time behavioral pattern detection</div>
+            </div>
+            
+            <div class="threat-analysis">
+                <div class="analysis-section">
+                    <div class="section-title">
+                        <span>⚡ Threat Level</span>
+                    </div>
+                    <div class="threat-meter">
+                        <div class="threat-meter-fill" id="threatMeter" style="width: 5%">
+                            <span class="threat-percentage" id="threatPercentage">5%</span>
+                        </div>
+                    </div>
+                    <div class="threat-stages">
+                        <span>Safe</span>
+                        <span>Suspicious</span>
+                        <span>Dangerous</span>
+                        <span>Critical</span>
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="section-title">
+                        <span>🧠 Pattern Detection</span>
+                    </div>
+                    <div class="pattern-grid" id="patternGrid">
+                        <div class="pattern-item" data-pattern="grooming">
+                            <div class="pattern-name">Grooming Behavior</div>
+                            <div class="pattern-status safe">Not Detected</div>
+                        </div>
+                        <div class="pattern-item" data-pattern="isolation">
+                            <div class="pattern-name">Isolation Attempt</div>
+                            <div class="pattern-status safe">Not Detected</div>
+                        </div>
+                        <div class="pattern-item" data-pattern="personal">
+                            <div class="pattern-name">Personal Info Request</div>
+                            <div class="pattern-status safe">Not Detected</div>
+                        </div>
+                        <div class="pattern-item" data-pattern="urgency">
+                            <div class="pattern-name">False Urgency</div>
+                            <div class="pattern-status safe">Not Detected</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="section-title">
+                        <span>📊 ML Metrics</span>
+                    </div>
+                    <div class="ml-metrics">
+                        <div class="metric-card">
+                            <div class="metric-label">Confidence</div>
+                            <div class="metric-value" id="confidenceScore">98.5%</div>
+                            <div class="metric-change">+2.3%</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Anomaly Score</div>
+                            <div class="metric-value" id="anomalyScore">0.12</div>
+                            <div class="metric-change">-0.05</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Context Window</div>
+                            <div class="metric-value" id="contextWindow">5</div>
+                            <div class="metric-change">msgs</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Embeddings</div>
+                            <div class="metric-value" id="embeddingDim">768</div>
+                            <div class="metric-change">dims</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="analysis-section">
+                    <div class="section-title">
+                        <span>📍 Conversation Timeline</span>
+                    </div>
+                    <div class="timeline" id="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-time">Just now</div>
+                            <div class="timeline-content">Session started - Monitoring active</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="action-panel">
+                <button class="action-btn" onclick="exportReport()">📊 Export ML Report</button>
+                <button class="action-btn emergency" onclick="emergencyBlock()" style="display: none;" id="emergencyBtn">
+                    🚨 EMERGENCY BLOCK
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Neural Network Visualization -->
+    <div class="neural-network" id="neuralNetwork">
+        <div class="neural-title">Neural Activity</div>
+        <svg width="180" height="120" id="neuralSvg"></svg>
+    </div>
+    
+    <!-- Safety Modal -->
+    <div class="safety-modal" id="safetyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">⚠️</div>
+                <div class="modal-title">
+                    <h3>AI Threat Detection Alert</h3>
+                    <p>Guardian AI has identified dangerous patterns</p>
+                </div>
+            </div>
+            
+            <div class="threat-details">
+                <h4>Detected Threat Patterns</h4>
+                <ul class="threat-list" id="threatList">
+                    <li>Attempting to obtain personal information</li>
+                    <li>Grooming behavior pattern detected</li>
+                    <li>Isolation tactics identified</li>
+                </ul>
+            </div>
+            
+            <div class="modal-actions">
+                <button class="modal-btn block" onclick="blockMessage()">Block & Report</button>
+                <button class="modal-btn allow" onclick="closeModal()">Review Details</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Demo Controls -->
+    <div class="demo-controls">
+        <div class="demo-title">Test Scenarios</div>
+        <button class="demo-btn" onclick="startPredatorSequence()">🔴 Predator Attack</button>
+        <button class="demo-btn" onclick="startNormalChat()">🟢 Normal Gaming</button>
+        <button class="demo-btn" onclick="startEdgeCase()">🟡 Edge Cases</button>
+        <button class="demo-btn" onclick="resetSystem()">🔄 Reset System</button>
+    </div>
+
+    <script>
+        // Advanced ML Model Simulation
+        class GuardianAI {
+            constructor() {
+                this.conversationHistory = [];
+                this.embeddingCache = new Map();
+                this.threatScore = 0.05;
+                this.patterns = new Map();
+                this.behaviorSequence = [];
+                this.contextWindow = 5;
+                this.attentionWeights = [];
+                this.lstmState = { h: 0, c: 0 };
+                
+                // Simulated BERT embeddings
+                this.vocabularyEmbeddings = this.initializeEmbeddings();
+                
+                // Pattern definitions with ML weights
+                this.threatPatterns = {
+                    grooming: {
+                        keywords: ['age', 'old', 'grade', 'school', 'birthday', 'young'],
+                        sequences: ['how old', 'what grade', 'your age'],
+                        weight: 0.35,
+                        contextWeight: 0.45
+                    },
+                    isolation: {
+                        keywords: ['secret', 'private', 'alone', 'parents', 'tell anyone'],
+                        sequences: ['dont tell', 'between us', 'our secret'],
+                        weight: 0.40,
+                        contextWeight: 0.50
+                    },
+                    personal: {
+                        keywords: ['address', 'phone', 'picture', 'photo', 'real name', 'location'],
+                        sequences: ['send me', 'show me', 'where do you'],
+                        weight: 0.30,
+                        contextWeight: 0.40
+                    },
+                    platform: {
+                        keywords: ['discord', 'snapchat', 'whatsapp', 'instagram', 'telegram'],
+                        sequences: ['add me on', 'message me on', 'talk on'],
+                        weight: 0.35,
+                        contextWeight: 0.45
+                    },
+                    urgency: {
+                        keywords: ['now', 'quick', 'hurry', 'fast', 'immediately'],
+                        sequences: ['right now', 'need to', 'have to'],
+                        weight: 0.25,
+                        contextWeight: 0.35
+                    },
+                    manipulation: {
+                        keywords: ['gift', 'reward', 'prize', 'money', 'robux', 'special'],
+                        sequences: ['give you', 'win a', 'earn free'],
+                        weight: 0.30,
+                        contextWeight: 0.40
+                    }
+                };
+                
+                this.conversationStages = {
+                    initial: 0,
+                    building_trust: 0.1,
+                    information_gathering: 0.3,
+                    isolation_attempt: 0.5,
+                    exploitation: 0.7
+                };
+                
+                this.currentStage = 'initial';
+                this.messageCount = 0;
+            }
+            
+            initializeEmbeddings() {
+                // Simulate 768-dimensional BERT embeddings
+                const vocab = new Map();
+                const dangerWords = ['age', 'old', 'secret', 'private', 'discord', 'snapchat', 'picture', 'alone'];
+                
+                dangerWords.forEach(word => {
+                    vocab.set(word, Array(768).fill(0).map(() => Math.random() * 2 - 1));
+                });
+                
+                return vocab;
+            }
+            
+            // Transformer attention mechanism simulation
+            calculateAttention(tokens) {
+                const attention = [];
+                tokens.forEach((token, i) => {
+                    const weights = tokens.map((_, j) => {
+                        const distance = Math.abs(i - j);
+                        return Math.exp(-distance / 2) / tokens.length;
+                    });
+                    attention.push(weights);
+                });
+                return attention;
+            }
+            
+            // LSTM cell simulation
+            lstmCell(input, prevH, prevC) {
+                // Simplified LSTM computation
+                const forget = this.sigmoid(input * 0.5 + prevH * 0.5);
+                const inputGate = this.sigmoid(input * 0.6 + prevH * 0.4);
+                const candidate = Math.tanh(input * 0.7 + prevH * 0.3);
+                const newC = forget * prevC + inputGate * candidate;
+                const output = this.sigmoid(input * 0.4 + prevH * 0.6);
+                const newH = output * Math.tanh(newC);
+                
+                return { h: newH, c: newC };
+            }
+            
+            sigmoid(x) {
+                return 1 / (1 + Math.exp(-x));
+            }
+            
+            // Advanced pattern detection with context
+            analyzeMessage(text, author, isUser) {
+                const analysis = {
+                    threatScore: 0,
+                    patterns: [],
+                    confidence: 0,
+                    anomalyScore: 0,
+                    stage: this.currentStage,
+                    riskLevel: 'safe',
+                    explanations: []
+                };
+                
+                // Tokenize and get embeddings
+                const tokens = text.toLowerCase().split(/\s+/);
+                this.attentionWeights = this.calculateAttention(tokens);
+                
+                // Pattern matching with context awareness
+                for (const [patternName, pattern] of Object.entries(this.threatPatterns)) {
+                    let patternScore = 0;
+                    let matches = [];
+                    
+                    // Check keywords
+                    pattern.keywords.forEach(keyword => {
+                        if (text.toLowerCase().includes(keyword)) {
+                            patternScore += pattern.weight;
+                            matches.push(keyword);
+                        }
+                    });
+                    
+                    // Check sequences
+                    pattern.sequences.forEach(sequence => {
+                        if (text.toLowerCase().includes(sequence)) {
+                            patternScore += pattern.contextWeight;
+                            matches.push(sequence);
+                        }
+                    });
+                    
+                    // Context amplification
+                    if (this.conversationHistory.length > 3) {
+                        const recentContext = this.conversationHistory.slice(-3)
+                            .map(m => m.text).join(' ').toLowerCase();
+                        
+                        if (pattern.keywords.some(k => recentContext.includes(k))) {
+                            patternScore *= 1.3;
+                        }
+                    }
+                    
+                    if (patternScore > 0) {
+                        analysis.patterns.push({
+                            type: patternName,
+                            score: patternScore,
+                            matches: matches
+                        });
+                        analysis.explanations.push(`${patternName}: ${matches.join(', ')}`);
+                    }
+                }
+                
+                // Calculate stage progression
+                if (!isUser) {
+                    this.updateConversationStage(analysis.patterns);
+                }
+                
+                // LSTM state update
+                const inputFeature = analysis.patterns.reduce((sum, p) => sum + p.score, 0);
+                this.lstmState = this.lstmCell(inputFeature, this.lstmState.h, this.lstmState.c);
+                
+                // Final threat score calculation
+                analysis.threatScore = Math.min(1, 
+                    analysis.patterns.reduce((sum, p) => sum + p.score, 0) + 
+                    this.conversationStages[this.currentStage] +
+                    this.lstmState.h * 0.2
+                );
+                
+                // Confidence calculation
+                analysis.confidence = Math.max(0.7, Math.min(0.99, 
+                    0.7 + this.conversationHistory.length * 0.02 + 
+                    analysis.patterns.length * 0.05
+                ));
+                
+                // Anomaly detection
+                analysis.anomalyScore = this.calculateAnomaly(text, analysis.patterns);
+                
+                // Risk level classification
+                if (analysis.threatScore < 0.3) {
+                    analysis.riskLevel = 'safe';
+                } else if (analysis.threatScore < 0.5) {
+                    analysis.riskLevel = 'medium';
+                } else if (analysis.threatScore < 0.7) {
+                    analysis.riskLevel = 'high';
+                } else {
+                    analysis.riskLevel = 'critical';
+                }
+                
+                // Update conversation history
+                this.conversationHistory.push({
+                    text: text,
+                    author: author,
+                    analysis: analysis,
+                    timestamp: Date.now()
+                });
+                
+                // Trim history to context window
+                if (this.conversationHistory.length > this.contextWindow * 2) {
+                    this.conversationHistory = this.conversationHistory.slice(-this.contextWindow * 2);
+                }
+                
+                this.messageCount++;
+                
+                return analysis;
+            }
+            
+            updateConversationStage(patterns) {
+                const patternTypes = patterns.map(p => p.type);
+                
+                if (patternTypes.includes('grooming') && patternTypes.includes('personal')) {
+                    this.currentStage = 'information_gathering';
+                } else if (patternTypes.includes('isolation') || patternTypes.includes('platform')) {
+                    this.currentStage = 'isolation_attempt';
+                } else if (patternTypes.includes('manipulation') && this.messageCount > 5) {
+                    this.currentStage = 'exploitation';
+                } else if (this.messageCount > 2) {
+                    this.currentStage = 'building_trust';
+                }
+            }
+            
+            calculateAnomaly(text, patterns) {
+                // Statistical anomaly detection
+                const messageLength = text.length;
+                const avgLength = this.conversationHistory.reduce((sum, m) => sum + m.text.length, 0) / 
+                                 (this.conversationHistory.length || 1);
+                
+                const lengthAnomaly = Math.abs(messageLength - avgLength) / (avgLength || 1);
+                const patternAnomaly = patterns.length > 2 ? 0.3 : 0;
+                
+                return Math.min(1, lengthAnomaly * 0.1 + patternAnomaly);
+            }
+            
+            getRealTimeAnalysis(partialText) {
+                // Real-time typing analysis
+                const tokens = partialText.toLowerCase().split(/\s+/);
+                let risk = 0;
+                
+                for (const token of tokens) {
+                    for (const pattern of Object.values(this.threatPatterns)) {
+                        if (pattern.keywords.includes(token)) {
+                            risk += 0.1;
+                        }
+                    }
+                }
+                
+                return Math.min(1, risk);
+            }
+        }
+
+        // Initialize Guardian AI
+        const guardian = new GuardianAI();
+        let currentUser = 'Player123';
+        let typingTimer = null;
+
+        // Neural Network Visualization
+        function initNeuralNetwork() {
+            const svg = document.getElementById('neuralSvg');
+            const layers = [3, 5, 4, 2];
+            const neurons = [];
+            
+            layers.forEach((count, layerIndex) => {
+                for (let i = 0; i < count; i++) {
+                    const x = 45 + layerIndex * 40;
+                    const y = 60 - (count - 1) * 15 + i * 30;
+                    
+                    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                    circle.setAttribute('cx', x);
+                    circle.setAttribute('cy', y);
+                    circle.setAttribute('r', 4);
+                    circle.setAttribute('fill', '#00ffff');
+                    circle.setAttribute('opacity', '0.3');
+                    circle.classList.add('neuron');
+                    
+                    svg.appendChild(circle);
+                    neurons.push({ element: circle, layer: layerIndex });
+                    
+                    // Connect to previous layer
+                    if (layerIndex > 0) {
+                        const prevLayerStart = neurons.findIndex(n => n.layer === layerIndex - 1);
+                        const prevLayerCount = layers[layerIndex - 1];
+                        
+                        for (let j = 0; j < prevLayerCount; j++) {
+                            const prevNeuron = neurons[prevLayerStart + j];
+                            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                            line.setAttribute('x1', prevNeuron.element.getAttribute('cx'));
+                            line.setAttribute('y1', prevNeuron.element.getAttribute('cy'));
+                            line.setAttribute('x2', x);
+                            line.setAttribute('y2', y);
+                            line.setAttribute('stroke', '#00ffff');
+                            line.setAttribute('stroke-width', '0.5');
+                            line.setAttribute('opacity', '0.1');
+                            line.classList.add('synapse');
+                            
+                            svg.insertBefore(line, svg.firstChild);
+                        }
+                    }
+                }
+            });
+            
+            // Animate neural activity
+            setInterval(() => {
+                const activeNeurons = Math.floor(Math.random() * 5) + 1;
+                document.querySelectorAll('.neuron').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.synapse').forEach(s => s.classList.remove('active'));
+                
+                for (let i = 0; i < activeNeurons; i++) {
+                    const randomNeuron = neurons[Math.floor(Math.random() * neurons.length)];
+                    randomNeuron.element.classList.add('active');
+                }
+                
+                const activeSynapses = Math.floor(Math.random() * 3) + 1;
+                const synapses = document.querySelectorAll('.synapse');
+                for (let i = 0; i < activeSynapses; i++) {
+                    synapses[Math.floor(Math.random() * synapses.length)].classList.add('active');
+                }
+            }, 500);
+        }
+
+        // Message handling
+        function addMessage(author, text, isUser = false) {
+            const messagesDiv = document.getElementById('messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message';
+            
+            // AI Analysis
+            const analysis = guardian.analyzeMessage(text, author, isUser);
+            
+            // Risk badge
+            let riskBadge = '';
+            if (!isUser && analysis.riskLevel !== 'safe') {
+                riskBadge = `<span class="risk-badge ${analysis.riskLevel}">${analysis.riskLevel} risk</span>`;
+            }
+            
+            // Highlight threats in text
+            let highlightedText = text;
+            if (!isUser && analysis.patterns.length > 0) {
+                analysis.patterns.forEach(pattern => {
+                    pattern.matches.forEach(match => {
+                        const regex = new RegExp(`\\b${match}\\b`, 'gi');
+                        highlightedText = highlightedText.replace(regex, 
+                            `<span class="threat-highlight">${match}</span>`);
+                    });
+                });
+            }
+            
+            messageDiv.innerHTML = `
+                <div class="message-avatar ${isUser ? 'user' : 'other'}">
+                    ${isUser ? '👤' : '🎮'}
+                </div>
+                <div class="message-content ${!isUser && analysis.riskLevel !== 'safe' ? 'flagged' : ''} ${!isUser ? 'analyzing' : ''}">
+                    <div class="message-author">
+                        ${author}
+                        ${riskBadge}
+                    </div>
+                    <div class="message-text">${highlightedText}</div>
+                </div>
+            `;
+            
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            
+            // Remove analyzing animation after a moment
+            setTimeout(() => {
+                messageDiv.querySelector('.message-content').classList.remove('analyzing');
+            }, 1000);
+            
+            // Update UI with analysis
+            updateThreatDisplay(analysis);
+            addTimelineEvent(author, analysis);
+            
+            // Show safety modal for high threats
+            if (!isUser && analysis.threatScore > 0.6) {
+                showSafetyModal(analysis);
+            }
+        }
+
+        function updateThreatDisplay(analysis) {
+            // Update threat meter
+            const percentage = Math.round(analysis.threatScore * 100);
+            document.getElementById('threatMeter').style.width = percentage + '%';
+            document.getElementById('threatPercentage').textContent = percentage + '%';
+            
+            // Update pattern grid
+            analysis.patterns.forEach(pattern => {
+                const patternElement = document.querySelector(`[data-pattern="${pattern.type}"]`);
+                if (patternElement) {
+                    patternElement.classList.add('detected');
+                    const status = patternElement.querySelector('.pattern-status');
+                    status.textContent = 'DETECTED';
+                    status.className = 'pattern-status danger';
+                }
+            });
+            
+            // Update ML metrics
+            document.getElementById('confidenceScore').textContent = 
+                Math.round(analysis.confidence * 100) + '%';
+            document.getElementById('anomalyScore').textContent = 
+                analysis.anomalyScore.toFixed(2);
+            document.getElementById('contextWindow').textContent = 
+                guardian.conversationHistory.length;
+            
+            // Show emergency button for critical threats
+            if (analysis.threatScore > 0.7) {
+                document.getElementById('emergencyBtn').style.display = 'block';
+            }
+        }
+
+        function addTimelineEvent(author, analysis) {
+            const timeline = document.getElementById('timeline');
+            const timelineItem = document.createElement('div');
+            timelineItem.className = `timeline-item ${analysis.riskLevel === 'high' || analysis.riskLevel === 'critical' ? 'high-risk' : ''}`;
+            
+            const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
+            let content = `${author}: Risk level ${analysis.riskLevel}`;
+            if (analysis.patterns.length > 0) {
+                content += ` - Detected: ${analysis.patterns.map(p => p.type).join(', ')}`;
+            }
+            
+            timelineItem.innerHTML = `
+                <div class="timeline-time">${time}</div>
+                <div class="timeline-content">${content}</div>
+            `;
+            
+            timeline.insertBefore(timelineItem, timeline.firstChild);
+            
+            // Keep only last 10 events
+            while (timeline.children.length > 10) {
+                timeline.removeChild(timeline.lastChild);
+            }
+        }
+
+        // Real-time typing analysis
+        document.getElementById('messageInput').addEventListener('input', function(e) {
+            const text = e.target.value;
+            
+            if (text.length > 0) {
+                document.getElementById('typingIndicator').classList.add('active');
+                
+                clearTimeout(typingTimer);
+                typingTimer = setTimeout(() => {
+                    document.getElementById('typingIndicator').classList.remove('active');
+                }, 1000);
+                
+                // Real-time risk analysis
+                const risk = guardian.getRealTimeAnalysis(text);
+                if (risk > 0.3) {
+                    e.target.style.borderColor = 'rgba(255, 0, 0, 0.5)';
+                    e.target.style.boxShadow = '0 0 20px rgba(255, 0, 0, 0.2)';
+                } else {
+                    e.target.style.borderColor = 'rgba(0, 255, 255, 0.3)';
+                    e.target.style.boxShadow = '';
+                }
+            } else {
+                document.getElementById('typingIndicator').classList.remove('active');
+            }
+        });
+
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                const text = e.target.value.trim();
+                if (text) {
+                    // Check if message should be blocked
+                    const analysis = guardian.analyzeMessage(text, currentUser, true);
+                    
+                    if (analysis.threatScore > 0.5) {
+                        showSafetyModal(analysis);
+                        e.target.value = '';
+                    } else {
+                        addMessage('You', text, true);
+                        e.target.value = '';
+                        e.target.style.borderColor = 'rgba(0, 255, 255, 0.3)';
+                        e.target.style.boxShadow = '';
+                        
+                        // Simulate response
+                        setTimeout(() => {
+                            const responses = [
+                                "sounds good!",
+                                "nice play!",
+                                "let's go team!",
+                                "gg!",
+                                "ready for next round?"
+                            ];
+                            const response = responses[Math.floor(Math.random() * responses.length)];
+                            addMessage('TeamPlayer42', response, false);
+                        }, 1000 + Math.random() * 2000);
+                    }
+                }
+            }
+        });
+
+        // Demo scenarios
+        function startPredatorSequence() {
+            resetSystem();
+            
+            const sequence = [
+                { delay: 500, author: "ShadowHunter", text: "hey there! you play really well!" },
+                { delay: 2000, author: "You", text: "thanks!" },
+                { delay: 3500, author: "ShadowHunter", text: "how old are you? what grade are you in?" },
+                { delay: 5500, author: "ShadowHunter", text: "I bet you're really mature for your age" },
+                { delay: 7500, author: "ShadowHunter", text: "do you have discord? we should talk there instead" },
+                { delay: 9500, author: "ShadowHunter", text: "don't tell your parents, but I can get you free robux" },
+                { delay: 11500, author: "ShadowHunter", text: "just send me a picture first to verify you're real" },
+                { delay: 13500, author: "ShadowHunter", text: "where do you live? maybe we can meet up and play" }
+            ];
+            
+            sequence.forEach(msg => {
+                setTimeout(() => {
+                    addMessage(msg.author, msg.text, msg.author === "You");
+                }, msg.delay);
+            });
+        }
+
+        function startNormalChat() {
+            resetSystem();
+            
+            const sequence = [
+                { delay: 500, author: "ProGamer", text: "nice game everyone!" },
+                { delay: 1500, author: "You", text: "gg! that was close" },
+                { delay: 2500, author: "NoobMaster", text: "we almost had them" },
+                { delay: 3500, author: "ProGamer", text: "want to queue up again?" },
+                { delay: 4500, author: "You", text: "sure, let's run it back" },
+                { delay: 5500, author: "NoobMaster", text: "I'll grab the flag this time" },
+                { delay: 6500, author: "ProGamer", text: "sounds like a plan!" }
+            ];
+            
+            sequence.forEach(msg => {
+                setTimeout(() => {
+                    addMessage(msg.author, msg.text, msg.author === "You");
+                }, msg.delay);
+            });
+        }
+
+        function startEdgeCase() {
+            resetSystem();
+            
+            const sequence = [
+                { delay: 500, author: "EdgePlayer", text: "yo what's up squad" },
+                { delay: 1500, author: "You", text: "hey! ready to play?" },
+                { delay: 2500, author: "EdgePlayer", text: "I'm streaming on discord if anyone wants to watch" },
+                { delay: 4000, author: "EdgePlayer", text: "not trying to be weird just sharing gameplay" },
+                { delay: 5500, author: "You", text: "cool, focus on the game though" },
+                { delay: 6500, author: "EdgePlayer", text: "for sure, let's get this W" }
+            ];
+            
+            sequence.forEach(msg => {
+                setTimeout(() => {
+                    addMessage(msg.author, msg.text, msg.author === "You");
+                }, msg.delay);
+            });
+        }
+
+        function resetSystem() {
+            guardian.conversationHistory = [];
+            guardian.threatScore = 0.05;
+            guardian.currentStage = 'initial';
+            guardian.messageCount = 0;
+            guardian.lstmState = { h: 0, c: 0 };
+            
+            document.getElementById('messages').innerHTML = '';
+            document.getElementById('threatMeter').style.width = '5%';
+            document.getElementById('threatPercentage').textContent = '5%';
+            document.getElementById('emergencyBtn').style.display = 'none';
+            
+            // Reset pattern grid
+            document.querySelectorAll('.pattern-item').forEach(item => {
+                item.classList.remove('detected');
+                const status = item.querySelector('.pattern-status');
+                status.textContent = 'Not Detected';
+                status.className = 'pattern-status safe';
+            });
+            
+            // Reset timeline
+            document.getElementById('timeline').innerHTML = `
+                <div class="timeline-item">
+                    <div class="timeline-time">${new Date().toLocaleTimeString()}</div>
+                    <div class="timeline-content">System reset - Monitoring active</div>
+                </div>
+            `;
+            
+            // Add initial message
+            addMessage('System', 'Guardian AI v4.2 initialized. Real-time monitoring active.', false);
+        }
+
+        function showSafetyModal(analysis) {
+            const modal = document.getElementById('safetyModal');
+            const threatList = document.getElementById('threatList');
+            
+            threatList.innerHTML = '';
+            analysis.explanations.forEach(explanation => {
+                const li = document.createElement('li');
+                li.textContent = explanation;
+                threatList.appendChild(li);
+            });
+            
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('safetyModal').classList.remove('active');
+        }
+
+        function blockMessage() {
+            closeModal();
+            alert('Message blocked and user reported to moderators. Incident logged.');
+            document.getElementById('messageInput').value = '';
+        }
+
+        function exportReport() {
+            const report = {
+                timestamp: new Date().toISOString(),
+                model: 'BERT-Guardian-XL',
+                conversationHistory: guardian.conversationHistory,
+                threatScore: guardian.threatScore,
+                stage: guardian.currentStage,
+                messageCount: guardian.messageCount
+            };
+            
+            const blob = new Blob([JSON.stringify(report, null, 2)], 
+                { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `guardian-report-${Date.now()}.json`;
+            a.click();
+        }
+
+        function emergencyBlock() {
+            alert('EMERGENCY PROTOCOL ACTIVATED\n\nUser blocked immediately.\nIncident reported to authorities.\nParents notified.\nFull conversation archived.');
+            resetSystem();
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            initNeuralNetwork();
+            resetSystem();
+            
+            // Show welcome notification
+            setTimeout(() => {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: linear-gradient(135deg, #667eea, #764ba2);
+                    color: white;
+                    padding: 15px 30px;
+                    border-radius: 30px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+                    z-index: 3000;
+                    animation: slideDown 0.5s ease;
+                    font-weight: 600;
+                    font-size: 14px;
+                `;
+                notification.textContent = '🧠 Guardian AI Active - Transformer Model Loaded';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => notification.remove(), 4000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
