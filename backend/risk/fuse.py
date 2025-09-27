@@ -1,10 +1,11 @@
 from typing import List, Dict, Any
 from .model import TransformerWrapper
 from .rules import GroomingRules, RiskLevel
+from .huggingface_model import HuggingFaceRiskScorer, LocalRiskScorer
 
 class RiskFusion:
     """
-    Fuses ML model predictions with rule-based detections
+    Fuses ML model predictions with rule-based detections and Hugging Face models
     Applies calibrated scoring and thresholds for final risk assessment
     """
 
@@ -12,9 +13,18 @@ class RiskFusion:
         self.transformer = TransformerWrapper()
         self.rules_engine = GroomingRules()
 
-        # Fusion weights
-        self.ml_weight = 0.6
-        self.rules_weight = 0.4
+        # Initialize Hugging Face scorer with fallback
+        try:
+            self.hf_scorer = HuggingFaceRiskScorer()
+            print("✅ Hugging Face models loaded successfully")
+        except Exception as e:
+            print(f"⚠️ Hugging Face API not available ({e}), using local fallback")
+            self.hf_scorer = LocalRiskScorer()
+
+        # Updated fusion weights to include HF models
+        self.hf_weight = 0.4
+        self.ml_weight = 0.3
+        self.rules_weight = 0.3
 
         # Calibrated thresholds
         self.low_threshold = 0.3
@@ -23,7 +33,7 @@ class RiskFusion:
 
     def analyze_message(self, text: str, conversation_history: List[str] = None) -> Dict[str, Any]:
         """
-        Perform comprehensive risk analysis combining ML and rules
+        Perform comprehensive risk analysis combining ML, rules, and Hugging Face models
         """
         if not text.strip():
             return self._default_response()
@@ -35,21 +45,44 @@ class RiskFusion:
         # Get rule-based analysis
         rules_score, rule_explanations, rule_risk_level = self.rules_engine.analyze_message(text)
 
-        # Fuse scores
-        fused_score = (ml_score * self.ml_weight) + (rules_score * self.rules_weight)
+        # Get Hugging Face analysis
+        hf_history = []
+        if conversation_history:
+            hf_history = [{"text": msg, "role": "user"} for msg in conversation_history]
+        hf_result = self.hf_scorer.comprehensive_analysis(text, hf_history)
+        hf_score = hf_result.get("risk_score", 0)
+
+        # Fuse scores with new weights
+        fused_score = (
+            (hf_score * self.hf_weight) +
+            (ml_score * self.ml_weight) +
+            (rules_score * self.rules_weight)
+        )
 
         # Apply rule overrides for high-confidence detections
         if rule_risk_level == RiskLevel.HIGH and rules_score > 0.7:
             fused_score = max(fused_score, 0.8)  # Boost score for high-confidence rule matches
 
+        # HF model override for very high confidence
+        if hf_score > 0.8:
+            fused_score = max(fused_score, 0.85)
+
+        # Cap at 1.0
+        fused_score = min(fused_score, 1.0)
+
         # Determine final risk level
         final_risk_level = self._determine_risk_level(fused_score, rule_risk_level)
 
-        # Combine explanations
+        # Combine explanations from all sources
         all_explanations = rule_explanations.copy()
+
         if ml_result.get("risk_indicators"):
             ml_explanations = [f"ML detected: {indicator}" for indicator in ml_result["risk_indicators"]]
             all_explanations.extend(ml_explanations)
+
+        if hf_result.get("explanations"):
+            hf_explanations = [f"AI Analysis: {exp}" for exp in hf_result["explanations"]]
+            all_explanations.extend(hf_explanations)
 
         # Get safety suggestions if needed
         suggestions = []
@@ -65,6 +98,8 @@ class RiskFusion:
             "suggestions": suggestions,
             "ml_score": round(ml_score, 3),
             "rules_score": round(rules_score, 3),
+            "hf_score": round(hf_score, 3),
+            "hf_details": hf_result,
             "context_analysis": ml_result.get("context_analysis", {})
         }
 
