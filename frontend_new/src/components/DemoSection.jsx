@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ChatDemo from './Demo/ChatDemo';
 import './DemoSection.css';
+import maskImage from '../assets/images/mask.png';
 
 const DemoSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -45,7 +46,7 @@ const DemoSection = () => {
         <div className="demo-section-header">
           <div className={`demo-mascot-intro ${isVisible ? 'animate' : ''}`}>
             <img 
-              src="/mask.png" 
+              src={maskImage} 
               alt="Guardian Angel" 
               className="demo-mascot-image"
             />

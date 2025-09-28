@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Client, Room } from 'colyseus.js';
+import MessageBubble from './MessageBubble';
 import './LiveChatRoom.css';
 
 const LiveChatRoom = () => {
@@ -8,7 +9,8 @@ const LiveChatRoom = () => {
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [isConnected, setIsConnected] = useState(false);
-  const [currentUser, setCurrentUser] = useState('Player_42');
+  const [currentUser, setCurrentUser] = useState('user_77');
+  const [selectedUser, setSelectedUser] = useState('user_77');
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -42,17 +44,22 @@ const LiveChatRoom = () => {
       newRoom.onMessage('risk_update', (data) => {
         console.log('Risk update received:', data);
         // Update message with risk information
-        setMessages(prev => prev.map(msg => 
-          msg.id === data.messageId 
+        setMessages(prev => prev.map(msg =>
+          msg.id === data.messageId
             ? { ...msg, riskLevel: data.riskLevel, riskScore: data.riskScore }
             : msg
         ));
       });
 
-      console.log('Connected to FortCraft Arena chat as', currentUser);
+      console.log('Connected to FortCraft Arena chat as', selectedUser);
     } catch (error) {
       console.error('Failed to connect:', error);
     }
+  };
+
+  const switchUser = (username) => {
+    setSelectedUser(username);
+    setCurrentUser(username);
   };
 
   const sendMessage = () => {
@@ -73,38 +80,13 @@ const LiveChatRoom = () => {
     setCurrentMessage('');
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyDown = (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
   };
 
-  const formatTime = (timestamp) => {
-    return new Date(timestamp).toLocaleTimeString('en-US', {
-      hour12: true,
-      hour: 'numeric',
-      minute: '2-digit'
-    });
-  };
-
-  const getRiskColor = (riskLevel) => {
-    switch (riskLevel) {
-      case 'high': return '#DC2626';
-      case 'medium': return '#F59E0B';
-      case 'low': return '#10B981';
-      default: return '#6B7280';
-    }
-  };
-
-  const getRiskIcon = (riskLevel) => {
-    switch (riskLevel) {
-      case 'high': return '⚠️';
-      case 'medium': return '⚡';
-      case 'low': return '✅';
-      default: return '⏳';
-    }
-  };
 
   // Auto-connect on mount
   useEffect(() => {
@@ -113,6 +95,27 @@ const LiveChatRoom = () => {
 
   return (
     <div className="live-chat-room">
+      {/* User Controls */}
+      <div className="user-controls">
+        <div className="user-selector">
+          <button
+            className={`user-btn ${selectedUser === 'user_77' ? 'active' : ''}`}
+            onClick={() => switchUser('user_77')}
+          >
+            👤 user_77
+          </button>
+          <button
+            className={`user-btn ${selectedUser === 'Pred_15' ? 'active' : ''}`}
+            onClick={() => switchUser('Pred_15')}
+          >
+            🕴️ Pred_15
+          </button>
+        </div>
+        <div className="current-user-display">
+          Playing as: <strong>{currentUser}</strong>
+        </div>
+      </div>
+
       {/* FortCraft Arena Header */}
       <div className="chat-header">
         <div className="game-logo">
@@ -138,30 +141,18 @@ const LiveChatRoom = () => {
           </div>
         ) : (
           messages.map((message) => (
-            <div key={message.id} className={`message-bubble ${message.username === currentUser ? 'user-message' : 'other-message'}`}>
-              <div className="message-header">
-                <span className="username">{message.username}</span>
-                <span className="timestamp">{formatTime(message.timestamp)}</span>
-                {message.riskLevel && message.riskLevel !== 'pending' && (
-                  <span 
-                    className="risk-indicator"
-                    style={{ color: getRiskColor(message.riskLevel) }}
-                    title={`Risk Level: ${message.riskLevel} (${message.riskScore}%)`}
-                  >
-                    {getRiskIcon(message.riskLevel)}
-                  </span>
-                )}
-              </div>
-              <div className="message-content">
-                <p>{message.text}</p>
-                {message.riskLevel === 'high' && (
-                  <div className="threat-alert">
-                    <span className="alert-icon">🚨</span>
-                    <span className="alert-text">THREAT DETECTED</span>
-                  </div>
-                )}
-              </div>
-            </div>
+            <MessageBubble
+              key={message.id}
+              message={{
+                author: message.username,
+                text: message.text,
+                risk: message.riskScore || 0
+              }}
+              isUser={message.username === 'user_77'}
+              risk={message.riskScore || 0}
+              isVisible={true}
+              delay={0}
+            />
           ))
         )}
         <div ref={messagesEndRef} />
@@ -175,7 +166,7 @@ const LiveChatRoom = () => {
             placeholder={`Message as ${currentUser}...`}
             value={currentMessage}
             onChange={(e) => setCurrentMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
             className="message-input"
             disabled={!isConnected}
           />

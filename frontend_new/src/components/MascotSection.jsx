@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MascotSection.css';
+import guardianLogo from '../assets/images/guardian_logo.png';
 
 const MascotSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -52,7 +53,7 @@ const MascotSection = () => {
           {/* Large Mascot Display */}
           <div className={`mascot-display ${isVisible ? 'animate' : ''}`}>
             <img 
-              src="/guardian_logo.png" 
+              src={guardianLogo} 
               alt="Guardian AI Angel Mascot" 
               className="mascot-hero-image"
             />

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
+import guardianLogo from '../assets/images/guardian_logo.png';
 
 const Navbar = ({ onGetStarted }) => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,7 +25,7 @@ const Navbar = ({ onGetStarted }) => {
         {/* Logo with Mascot - EXACT Quantra positioning */}
         <div className="navbar-logo">
           <img 
-            src="/guardian_logo.png" 
+            src={guardianLogo} 
             alt="Guardian AI Angel" 
             className="navbar-mascot"
           />
