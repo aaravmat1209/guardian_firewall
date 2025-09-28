@@ -24,10 +24,10 @@ const Hero = () => {
                 <img src="/pqnd_pro.png" alt="GUARDIAN" className="hero-guardian-image" />
               </div>
               <span className="hero-title-line hero-title-accent">
-                PROTECTING CHILDREN
+                REAL TIME PROTECTION
               </span>
               <span className="hero-title-line">
-                WHERE HARM BEGINS
+                FOR YOUNG GAMERS.
               </span>
             </h1>
         </div>

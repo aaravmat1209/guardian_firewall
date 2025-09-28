@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ onGetStarted }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -56,9 +56,9 @@ const Navbar = () => {
 
         {/* CTA Button - EXACT Quantra style */}
         <div className="navbar-actions">
-          <a href="#get-started" className="btn btn-primary navbar-btn">
+          <button onClick={onGetStarted} className="btn btn-primary navbar-btn">
             GET STARTED
-          </a>
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -90,9 +90,9 @@ const Navbar = () => {
               <a href="#contact" onClick={toggleMobileMenu}>CONTACT</a>
             </li>
             <li>
-              <a href="#get-started" className="btn btn-primary" onClick={toggleMobileMenu}>
+              <button className="btn btn-primary" onClick={() => { onGetStarted(); toggleMobileMenu(); }}>
                 GET STARTED
-              </a>
+              </button>
             </li>
           </ul>
         </div>
