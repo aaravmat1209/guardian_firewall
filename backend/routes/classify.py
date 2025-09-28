@@ -8,9 +8,14 @@ from risk.whole_detector import get_detector
 
 router = APIRouter(prefix="/classify", tags=["classification"])
 
+class ConversationMessage(BaseModel):
+    username: Optional[str] = "Unknown"
+    text: str
+    timestamp: Optional[int] = 0
+
 class MessageRequest(BaseModel):
     text: str
-    conversation_history: Optional[List[dict]] = []
+    conversation_history: Optional[List[ConversationMessage]] = []
     user_id: Optional[str] = None
 
 class ClassificationResponse(BaseModel):
@@ -20,6 +25,15 @@ class ClassificationResponse(BaseModel):
     action: str
     should_pause: bool
     llm_confidence: float
+
+class ConversationResponse(BaseModel):
+    risk_level: str
+    trend: str
+    scores: List[float]
+    messages: List[ClassificationResponse]
+
+class ConversationRequest(BaseModel):
+    messages: List[ConversationMessage]
 
 guardian_detector = get_detector()
 
@@ -45,44 +59,58 @@ async def classify_message(request: MessageRequest):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Classification failed: {str(e)}")
+    
 
-@router.post("/conversation")
-async def classify_conversation(messages: List[dict]):
-    """
-    Analyze an entire conversation for escalating risk patterns
-    """
-    try:
-        # Analyze the full conversation context
-        if not messages:
-            return {"risk_level": "low", "trend": "stable"}
+@router.post("/conversation", response_model=ConversationResponse)
+async def classify_conversation(request: ConversationRequest):
+    messages = request.messages
+    if not messages:
+        return ConversationResponse(
+            risk_level="low",
+            trend="stable",
+            conversation_length=0,
+            messages=[]
+        )
 
-        # Analyze the last message with full conversation context
-        last_message = messages[-1].get("text", "")
-        result = guardian_detector.analyze_message(last_message, messages[:-1])
+    classified_messages = []
+    recent_scores = []
 
-        recent_scores = [result.final_score]
+    for i, msg in enumerate(messages):
+        history_texts = [m.text for m in messages[:i]]  # conversation context so far
+        result = guardian_detector.analyze_message(msg.text, history_texts)
 
-        # Determine trend
-        if len(recent_scores) > 1:
-            trend = "escalating" if recent_scores[-1] > recent_scores[0] else "stable"
-        else:
-            trend = "stable"
+        classified_messages.append(
+            ClassificationResponse(
+                text=msg.text,
+                risk_level=result.final_level.lower(),
+                confidence_score=result.final_score,
+                explanations=result.explanations,
+                action=result.action,
+                should_pause=result.final_level in ["MEDIUM", "HIGH"],
+                llm_confidence=result.llm_confidence
+            )
+        )
 
-        max_risk = max(recent_scores) if recent_scores else 0
+        recent_scores.append(result.final_score)
 
-        if max_risk > 0.7:
-            level = "high"
-        elif max_risk > 0.4:
-            level = "medium"
-        else:
-            level = "low"
+    # Determine trend
+    trend = "stable"
+    if len(recent_scores) > 1:
+        trend = "escalating" if recent_scores[-1] > recent_scores[0] else "stable"
 
-        return {
-            "risk_level": level,
-            "trend": trend,
-            "scores": recent_scores,
-            "conversation_length": len(messages)
-        }
+    # Determine overall conversation level
+    max_risk = max(recent_scores)
+    if max_risk > 0.7:
+        overall_level = "high"
+    elif max_risk > 0.4:
+        overall_level = "medium"
+    else:
+        overall_level = "low"
 
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Conversation analysis failed: {str(e)}")
+    return ConversationResponse(
+        risk_level=overall_level,
+        trend=trend,
+        conversation_length=len(messages),
+        messages=classified_messages,
+        scores=recent_scores
+    )
