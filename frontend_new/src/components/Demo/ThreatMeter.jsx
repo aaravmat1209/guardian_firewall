@@ -1,7 +1,40 @@
 import React from 'react';
 import './ThreatMeter.css';
 
-const ThreatMeter = ({ riskLevel, patterns, confidence, isActive }) => {
+const ThreatMeter = ({ riskLevel, patterns, confidence, isActive, explanations, conversationTrend }) => {
+  // Debug logging
+  console.log('🔍 ThreatMeter DEBUG - Received patterns:', patterns);
+  console.log('🔍 ThreatMeter DEBUG - Received explanations:', explanations);
+  console.log('🔍 ThreatMeter DEBUG - Received conversationTrend:', conversationTrend);
+  console.log('🔍 ThreatMeter DEBUG - Patterns type:', typeof patterns);
+  console.log('🔍 ThreatMeter DEBUG - Patterns length:', patterns ? patterns.length : 'undefined');
+
+  const getTrendMessage = (trend) => {
+    switch(trend) {
+      case 'escalating':
+        return 'Conversation risk is escalating';
+      case 'de-escalating':
+        return 'Conversation risk is de-escalating';
+      case 'stable':
+        return riskLevel > 30 ? 'Conversation risk is stable' : null;
+      default:
+        return null;
+    }
+  };
+
+  const getTrendIcon = (trend) => {
+    switch(trend) {
+      case 'escalating':
+        return '📈';
+      case 'de-escalating':
+        return '📉';
+      case 'stable':
+        return '📊';
+      default:
+        return '📊';
+    }
+  };
+
   const getThreatColor = (risk) => {
     if (risk <= 30) return '#10B981'; // Green
     if (risk <= 60) return '#F59E0B'; // Yellow
@@ -46,6 +79,23 @@ const ThreatMeter = ({ riskLevel, patterns, confidence, isActive }) => {
         <div className="threat-metric-value">{confidence}%</div>
       </div>
 
+      {/* Conversation Analysis */}
+      <div className="threat-trend">
+        <div className="threat-trend-label">CONVERSATION ANALYSIS</div>
+        {getTrendMessage(conversationTrend) && (
+          <div className="threat-trend-item">
+            <span className="threat-trend-icon">🔍</span>
+            <span className="threat-trend-text">{getTrendMessage(conversationTrend)}</span>
+          </div>
+        )}
+        {riskLevel > 80 && (
+          <div className="threat-trend-item">
+            <span className="threat-trend-icon">🔍</span>
+            <span className="threat-trend-text">User is suggesting a physical meeting, which is a serious threat.</span>
+          </div>
+        )}
+      </div>
+
       {/* Patterns Detected */}
       <div className="threat-patterns">
         <div className="threat-patterns-label">PATTERNS DETECTED</div>
@@ -56,8 +106,8 @@ const ThreatMeter = ({ riskLevel, patterns, confidence, isActive }) => {
             </div>
           ) : (
             patterns.map((pattern, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={`threat-pattern-item ${pattern.severity}`}
                 style={{ '--delay': `${index * 100}ms` }}
               >
@@ -70,6 +120,8 @@ const ThreatMeter = ({ riskLevel, patterns, confidence, isActive }) => {
           )}
         </div>
       </div>
+
+
 
       {/* Alert Banner for High Risk */}
       {riskLevel > 60 && (

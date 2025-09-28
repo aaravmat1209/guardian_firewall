@@ -15,6 +15,8 @@ const LiveChatRoom = () => {
   const [currentRisk, setCurrentRisk] = useState(0);
   const [currentPatterns, setCurrentPatterns] = useState([]);
   const [confidence, setConfidence] = useState(0);
+  const [currentExplanations, setCurrentExplanations] = useState([]);
+  const [conversationTrend, setConversationTrend] = useState("stable");
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -52,6 +54,8 @@ const LiveChatRoom = () => {
       // Listen for Guardian AI analysis updates
       newRoom.onMessage('guardian_ai_update', (data) => {
         console.log('🚨 Guardian AI analysis received:', data);
+        console.log('🔍 FRONTEND DEBUG - Patterns received:', data.patterns);
+        console.log('🔍 FRONTEND DEBUG - Patterns array length:', data.patterns ? data.patterns.length : 'undefined');
         console.log('🔄 Updating ThreatMeter with:', {
           riskScore: data.riskScore,
           patterns: data.patterns,
@@ -62,6 +66,12 @@ const LiveChatRoom = () => {
         setCurrentRisk(data.riskScore);
         setCurrentPatterns(data.patterns || []);
         setConfidence(data.confidence);
+        setCurrentExplanations(data.explanations || []);
+        setConversationTrend(data.conversationTrend || "stable");
+
+        console.log('🔍 FRONTEND DEBUG - currentPatterns state after update:', data.patterns || []);
+        console.log('🔍 FRONTEND DEBUG - currentExplanations state after update:', data.explanations || []);
+        console.log('🔍 FRONTEND DEBUG - conversationTrend state after update:', data.conversationTrend || "stable");
 
         // Update message with Guardian AI analysis
         setMessages(prev => prev.map(msg =>
@@ -223,6 +233,8 @@ const LiveChatRoom = () => {
             riskLevel={currentRisk}
             patterns={currentPatterns}
             confidence={confidence}
+            explanations={currentExplanations}
+            conversationTrend={conversationTrend}
             isActive={messages.length > 0}
           />
         </div>

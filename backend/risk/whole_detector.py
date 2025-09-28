@@ -85,26 +85,30 @@ class GuardianDetector:
             self._sentiment_analyzer = pipeline(
                 "sentiment-analysis",
                 model="cardiffnlp/twitter-roberta-base-sentiment-latest",
-                return_all_scores=True
+                return_all_scores=True,
+                use_safetensors=True
             )
 
             # Initialize toxicity detection model
             self._toxicity_analyzer = pipeline(
                 "text-classification",
                 model="unitary/toxic-bert",
-                return_all_scores=True
+                return_all_scores=True,
+                use_safetensors=True
             )
 
             # Initialize NSFW content detection
             self._nsfw_analyzer = pipeline(
                 "text-classification",
                 model="michellejieli/NSFW_text_classifier",
-                return_all_scores=True
+                return_all_scores=True,
+                use_safetensors=True
             )
 
             print("✅ Hugging Face models initialized successfully")
         except Exception as e:
             print(f"⚠️ Warning: Some Hugging Face models failed to load: {e}")
+            print("Falling back to rule-based pattern detection only")
             # Fallback: simple rule-based detection
             self._sentiment_analyzer = None
             self._toxicity_analyzer = None

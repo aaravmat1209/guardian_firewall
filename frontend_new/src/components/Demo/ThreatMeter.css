@@ -108,6 +108,50 @@
   color: var(--color-white);
 }
 
+/* Conversation Trend Section */
+.threat-trend {
+  margin-bottom: var(--spacing-4);
+}
+
+.threat-trend-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-3);
+}
+
+.threat-trend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  border-radius: var(--radius-md);
+  background-color: rgba(245, 158, 11, 0.1);
+  border: 1px solid #F59E0B;
+  font-size: var(--font-size-xs);
+  margin-bottom: var(--spacing-2);
+  opacity: 0;
+  transform: translateX(-16px);
+  animation: slideInPattern var(--duration-300) var(--ease-out) forwards;
+  animation-delay: 100ms;
+}
+
+.threat-trend-item:last-child {
+  margin-bottom: 0;
+}
+
+.threat-trend-icon {
+  font-size: var(--font-size-sm);
+  line-height: 1;
+}
+
+.threat-trend-text {
+  color: #F59E0B;
+  font-weight: var(--font-weight-semibold);
+}
+
 /* Patterns Section */
 .threat-patterns {
   margin-bottom: var(--spacing-4);

@@ -1,20 +1,5 @@
-<<<<<<< HEAD
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-=======
 # Python
 __pycache__/
 *.py[cod]
@@ -50,6 +35,27 @@ env/
 *.sqlite
 *.sqlite3
 
+# Node.js dependencies
+/node_modules
+node_modules/
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+frontend/dist/
+frontend/build/
+
+# logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 # IDE
 .vscode/
 .idea/
@@ -65,52 +71,18 @@ env/
 .Trashes
 ehthumbs.db
 Thumbs.db
-
-# Logs
-*.log
-logs/
-
-# Node.js
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# Production builds
-frontend/dist/
-frontend/build/
-
-# Package locks (optional - uncomment if you want to ignore them)
-# package-lock.json
-# yarn.lock
-
-# Environment variables
->>>>>>> 012c98023ebff729f24c82772ca0731c415c9a94
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-<<<<<<< HEAD
-# logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
 
-# OS generated files
-Thumbs.db
-=======
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
 # Coverage reports
 htmlcov/
 .coverage
@@ -120,9 +92,9 @@ coverage.xml
 # Pytest
 .pytest_cache/
 
-# Model files (if you add real ML models later)
+# Model files and AI model cache
 *.bin
 *.h5
 *.pkl
 *.joblib
->>>>>>> 012c98023ebff729f24c82772ca0731c415c9a94
+backend/model_cache/

@@ -20,6 +20,8 @@ class ClassificationResponse(BaseModel):
     action: str
     should_pause: bool
     llm_confidence: float
+    patterns: List[dict] = []
+    conversation_risk_trend: str = "stable"
 
 guardian_detector = get_detector()
 
@@ -40,7 +42,13 @@ async def classify_message(request: MessageRequest):
             explanations=result.explanations,
             action=result.action,
             should_pause=result.final_level in ["MEDIUM", "HIGH"],
-            llm_confidence=result.llm_confidence
+            llm_confidence=result.llm_confidence,
+            patterns=[{
+                "name": pattern.name,
+                "severity": pattern.severity,
+                "confidence": pattern.confidence
+            } for pattern in result.patterns],
+            conversation_risk_trend=result.conversation_risk_trend
         )
 
     except Exception as e:
