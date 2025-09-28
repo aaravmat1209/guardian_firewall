@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Client } from 'colyseus.js';
 import MessageBubble from './MessageBubble';
+import ThreatMeter from './ThreatMeter';
 import './LiveChatRoom.css';
 
 const LiveChatRoom = () => {
@@ -11,6 +12,9 @@ const LiveChatRoom = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [currentUser, setCurrentUser] = useState('user_77');
   const [selectedUser, setSelectedUser] = useState('user_77');
+  const [currentRisk, setCurrentRisk] = useState(0);
+  const [currentPatterns, setCurrentPatterns] = useState([]);
+  const [confidence, setConfidence] = useState(0);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -31,22 +35,47 @@ const LiveChatRoom = () => {
       setRoom(newRoom);
       setIsConnected(true);
 
-      // Listen for state changes
-      newRoom.state.messages.onAdd = (message, key) => {
-        setMessages(prev => [...prev, message]);
-      };
+      // Listen for state changes - wait for state to be ready
+      newRoom.onStateChange((state) => {
+        if (state.messages) {
+          const messagesArray = Array.from(state.messages.values());
+          setMessages(messagesArray);
+        }
+      });
 
-      newRoom.state.messages.onChange = (message, key) => {
-        setMessages(prev => prev.map(m => m.id === key ? message : m));
-      };
 
-      // Listen for risk updates
-      newRoom.onMessage('risk_update', (data) => {
-        console.log('Risk update received:', data);
-        // Update message with risk information
+      // Listen for system messages (join/leave notifications)
+      newRoom.onMessage('system_message', (data) => {
+        console.log('System message:', data);
+      });
+
+      // Listen for Guardian AI analysis updates
+      newRoom.onMessage('guardian_ai_update', (data) => {
+        console.log('🚨 Guardian AI analysis received:', data);
+        console.log('🔄 Updating ThreatMeter with:', {
+          riskScore: data.riskScore,
+          patterns: data.patterns,
+          confidence: data.confidence
+        });
+
+        // Update threat meter with real Guardian AI data
+        setCurrentRisk(data.riskScore);
+        setCurrentPatterns(data.patterns || []);
+        setConfidence(data.confidence);
+
+        // Update message with Guardian AI analysis
         setMessages(prev => prev.map(msg =>
           msg.id === data.messageId
-            ? { ...msg, riskLevel: data.riskLevel, riskScore: data.riskScore }
+            ? {
+                ...msg,
+                riskLevel: data.riskLevel,
+                riskScore: data.riskScore,
+                guardianAnalysis: {
+                  explanations: data.explanations,
+                  action: data.action,
+                  confidence: data.confidence
+                }
+              }
             : msg
         ));
       });
@@ -116,71 +145,86 @@ const LiveChatRoom = () => {
         </div>
       </div>
 
-      {/* FortCraft Arena Header */}
-      <div className="chat-header">
-        <div className="game-logo">
-          <span className="game-icon">🎮</span>
-          <div className="game-info">
-            <h3>FORTCRAFT ARENA</h3>
-            <p>TEAM CHAT</p>
+      {/* Main Chat Interface - Grid Layout like Demo */}
+      <div className="chat-demo-interface">
+        {/* Chat Window */}
+        <div className="chat-window">
+          {/* FortCraft Arena Header */}
+          <div className="chat-header">
+            <div className="chat-game-info">
+              <div className="chat-game-title">FORTCRAFT ARENA</div>
+              <div className="chat-game-subtitle">Team Chat</div>
+            </div>
+            <div className="chat-status">
+              <div className="chat-status-indicator"></div>
+              <span>{isConnected ? 'LIVE' : 'OFFLINE'}</span>
+            </div>
+          </div>
+
+          {/* Chat Messages */}
+          <div className="chat-messages">
+            {messages.length === 0 ? (
+              <div className="chat-empty">
+                <div className="chat-empty-icon">💬</div>
+                <div className="chat-empty-text">No messages yet. Start the conversation!</div>
+              </div>
+            ) : (
+              messages.map((message) => (
+                <MessageBubble
+                  key={message.id}
+                  message={{
+                    author: message.username,
+                    text: message.text,
+                    risk: message.riskScore || 0
+                  }}
+                  isUser={message.username === 'user_77'}
+                  risk={message.riskScore || 0}
+                  isVisible={true}
+                  delay={0}
+                />
+              ))
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Message Input */}
+          <div className="chat-input">
+            <div className="chat-input-field">
+              <input 
+                type="text" 
+                placeholder={`Message as ${currentUser}...`}
+                value={currentMessage}
+                onChange={(e) => setCurrentMessage(e.target.value)}
+                onKeyDown={handleKeyDown}
+                disabled={!isConnected}
+              />
+              <button 
+                className="chat-send-btn" 
+                onClick={sendMessage}
+                disabled={!currentMessage.trim() || !isConnected}
+              >
+                SEND
+              </button>
+            </div>
           </div>
         </div>
-        <div className="connection-status">
-          <span className={`status-indicator ${isConnected ? 'connected' : 'disconnected'}`}>
-            {isConnected ? '🟢 LIVE' : '🔴 OFFLINE'}
-          </span>
-        </div>
-      </div>
 
-      {/* Chat Messages */}
-      <div className="chat-messages">
-        {messages.length === 0 ? (
-          <div className="empty-chat">
-            <div className="empty-icon">💬</div>
-            <p>No messages yet. Start the conversation!</p>
+        {/* Threat Analysis Panel - Right Side */}
+        <div className="threat-analysis">
+          <div className="threat-analysis-header">
+            <h3 className="threat-analysis-title">THREAT ANALYSIS</h3>
+            <div className="threat-analysis-status">
+              <div className="threat-status-indicator"></div>
+              <span>MONITORING</span>
+            </div>
           </div>
-        ) : (
-          messages.map((message) => (
-            <MessageBubble
-              key={message.id}
-              message={{
-                author: message.username,
-                text: message.text,
-                risk: message.riskScore || 0
-              }}
-              isUser={message.username === 'user_77'}
-              risk={message.riskScore || 0}
-              isVisible={true}
-              delay={0}
-            />
-          ))
-        )}
-        <div ref={messagesEndRef} />
-      </div>
 
-      {/* Message Input */}
-      <div className="chat-input">
-        <div className="input-container">
-          <input
-            type="text"
-            placeholder={`Message as ${currentUser}...`}
-            value={currentMessage}
-            onChange={(e) => setCurrentMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
-            className="message-input"
-            disabled={!isConnected}
+          <ThreatMeter
+            riskLevel={currentRisk}
+            patterns={currentPatterns}
+            confidence={confidence}
+            isActive={messages.length > 0}
           />
-          <button
-            onClick={sendMessage}
-            disabled={!currentMessage.trim() || !isConnected}
-            className="send-button"
-          >
-            Send
-          </button>
-        </div>
-        <div className="input-footer">
-          <span className="message-count">{messages.length} messages</span>
-          <span className="user-info">Playing as: {currentUser}</span>
         </div>
       </div>
     </div>

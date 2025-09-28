@@ -3,12 +3,14 @@
 .live-chat-room {
   display: flex;
   flex-direction: column;
-  height: 100%;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
-  border: 1px solid rgba(220, 38, 38, 0.3);
-  border-radius: 8px;
-  overflow: hidden;
+  width: 100%;
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+  background: transparent;
 }
+
+/* Use shared ChatDemo styles for consistent layout */
 
 /* User Controls */
 .user-controls {
@@ -62,95 +64,9 @@
   letter-spacing: 0.3px;
 }
 
-/* Chat Header */
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 16px;
-  background: linear-gradient(90deg, #DC2626 0%, #B91C1C 100%);
-  border-bottom: 1px solid rgba(220, 38, 38, 0.3);
-}
+/* Use shared ChatDemo header styles */
 
-.game-logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.game-icon {
-  font-size: 20px;
-}
-
-.game-info h3 {
-  color: #FFFFFF;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin: 0;
-  line-height: 1;
-}
-
-.game-info p {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 10px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin: 0;
-  line-height: 1;
-}
-
-.connection-status {
-  display: flex;
-  align-items: center;
-}
-
-.status-indicator {
-  font-size: 12px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.status-indicator.connected {
-  color: #10B981;
-}
-
-.status-indicator.disconnected {
-  color: #EF4444;
-}
-
-/* Chat Messages */
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  background: #0a0a0a;
-}
-
-.empty-chat {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.empty-icon {
-  font-size: 32px;
-  margin-bottom: 8px;
-}
-
-.empty-chat p {
-  font-size: 14px;
-  margin: 0;
-}
+/* Use shared ChatDemo message styles */
 
 .message-bubble {
   display: flex;
@@ -242,88 +158,9 @@
   letter-spacing: 0.3px;
 }
 
-/* Chat Input */
-.chat-input {
-  padding: 16px;
-  background: #1a1a1a;
-  border-top: 1px solid rgba(220, 38, 38, 0.3);
-}
+/* Use shared ChatDemo threat analysis styles */
 
-.input-container {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.message-input {
-  flex: 1;
-  padding: 10px 12px;
-  background: #0a0a0a;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  color: #FFFFFF;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.message-input:focus {
-  border-color: #DC2626;
-  box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.2);
-}
-
-.message-input:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.message-input::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.send-button {
-  padding: 10px 16px;
-  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
-  color: #FFFFFF;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.send-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #B91C1C 0%, #991B1B 100%);
-  transform: translateY(-1px);
-}
-
-.send-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.input-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.message-count {
-  font-weight: 500;
-}
-
-.user-info {
-  font-weight: 600;
-  color: #DC2626;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-}
+/* Use shared ChatDemo input styles */
 
 /* Animations */
 @keyframes slideInUp {
@@ -364,34 +201,5 @@
   background: rgba(220, 38, 38, 0.5);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-  .live-chat-room {
-    height: 100vh;
-  }
-  
-  .chat-header {
-    padding: 8px 12px;
-  }
-  
-  .game-info h3 {
-    font-size: 12px;
-  }
-  
-  .game-info p {
-    font-size: 9px;
-  }
-  
-  .chat-messages {
-    padding: 12px;
-  }
-  
-  .message-bubble {
-    max-width: 90%;
-  }
-  
-  .chat-input {
-    padding: 12px;
-  }
-}
+/* Use shared ChatDemo responsive styles */
 

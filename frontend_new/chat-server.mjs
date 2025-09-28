@@ -3,6 +3,7 @@ import { Schema, MapSchema, type } from '@colyseus/schema';
 import http from 'http';
 import express from 'express';
 import cors from 'cors';
+import fetch from 'node-fetch';
 
 // Chat message schema
 class ChatMessage extends Schema {
@@ -106,53 +107,77 @@ class ChatRoom extends Room {
     // Add to room state
     this.state.messages.set(messageId, chatMessage);
 
-    // Simulate Guardian AI analysis for demo purposes
+    // Real Guardian AI analysis only
+    this.analyzeWithGuardianAI(messageId, messageData.text);
+  }
+
+  async analyzeWithGuardianAI(messageId, messageText) {
     try {
-      // Simulate risk analysis based on message content
-      let riskLevel = "low";
-      let riskScore = 0;
-      
-      const messageText = messageData.text.toLowerCase();
-      
-      // Simple keyword-based risk detection for demo
-      if (messageText.includes('age') || messageText.includes('old') || messageText.includes('young')) {
-        riskLevel = "medium";
-        riskScore = 45;
-      }
-      
-      if (messageText.includes('discord') || messageText.includes('snapchat') || messageText.includes('instagram')) {
-        riskLevel = "high";
-        riskScore = 75;
-      }
-      
-      if (messageText.includes('secret') || messageText.includes('picture') || messageText.includes('photo')) {
-        riskLevel = "high";
-        riskScore = 90;
-      }
-      
-      if (messageText.includes('sexy') || messageText.includes('hot') || messageText.includes('cute')) {
-        riskLevel = "high";
-        riskScore = 85;
-      }
+      // Get conversation history for context
+      const conversationHistory = this.getConversationHistory();
 
-      // Update message with simulated risk analysis
-      chatMessage.riskLevel = riskLevel;
-      chatMessage.riskScore = riskScore;
-
-      // Broadcast risk update to all clients
-      this.broadcast("risk_update", {
-        messageId: messageId,
-        riskLevel: riskLevel,
-        riskScore: riskScore,
-        explanations: [`Simulated analysis: ${riskLevel} risk detected`],
-        shouldPause: riskLevel === "high"
+      // Call Guardian AI backend for real threat analysis
+      const response = await fetch('http://localhost:8000/api/classify/message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: messageText,
+          conversation_history: conversationHistory
+        })
       });
 
-      console.log(`Simulated risk analysis: ${riskLevel} (${riskScore}%)`);
+      if (response.ok) {
+        const analysis = await response.json();
+
+        // Convert Guardian AI response to our format
+        const riskLevel = analysis.risk_level.toLowerCase();
+        const riskScore = Math.round(analysis.confidence_score * 100);
+
+        // Create patterns from explanations
+        const patterns = analysis.explanations.map(explanation => ({
+          name: explanation.substring(0, 50) + (explanation.length > 50 ? '...' : ''),
+          severity: analysis.risk_level.toLowerCase()
+        }));
+
+        // Update the actual message in state
+        const message = this.state.messages.get(messageId);
+        if (message) {
+          message.riskLevel = riskLevel;
+          message.riskScore = riskScore;
+        }
+
+        // Broadcast Guardian AI analysis update
+        this.broadcast("guardian_ai_update", {
+          messageId: messageId,
+          riskLevel: riskLevel,
+          riskScore: riskScore,
+          confidence: Math.round(analysis.llm_confidence * 100),
+          patterns: patterns,
+          explanations: analysis.explanations,
+          action: analysis.action,
+          shouldPause: riskLevel === "high"
+        });
+
+        console.log(`Guardian AI Real Analysis: ${riskLevel} (${riskScore}%) - Action: ${analysis.action}`);
+      } else {
+        throw new Error(`Backend response: ${response.status}`);
+      }
     } catch (error) {
-      console.error('Error in simulated analysis:', error);
-      chatMessage.riskLevel = "error";
-      chatMessage.riskScore = 0;
+      console.error('Guardian AI analysis error:', error);
+
+      // Broadcast error state
+      this.broadcast("guardian_ai_update", {
+        messageId: messageId,
+        riskLevel: "error",
+        riskScore: 0,
+        confidence: 0,
+        patterns: [{ name: "Analysis unavailable", severity: "medium" }],
+        explanations: [`Backend error: ${error.message}`],
+        action: "flag",
+        shouldPause: false
+      });
     }
   }
 
