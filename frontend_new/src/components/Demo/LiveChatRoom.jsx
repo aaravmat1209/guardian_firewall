@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Client, Room } from 'colyseus.js';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Client } from 'colyseus.js';
 import MessageBubble from './MessageBubble';
 import './LiveChatRoom.css';
 
@@ -21,7 +21,7 @@ const LiveChatRoom = () => {
     scrollToBottom();
   }, [messages]);
 
-  const connectToRoom = async () => {
+  const connectToRoom = useCallback(async () => {
     try {
       if (room) {
         await room.leave();
@@ -55,7 +55,7 @@ const LiveChatRoom = () => {
     } catch (error) {
       console.error('Failed to connect:', error);
     }
-  };
+  }, [client, currentUser]);
 
   const switchUser = (username) => {
     setSelectedUser(username);
@@ -91,7 +91,7 @@ const LiveChatRoom = () => {
   // Auto-connect on mount
   useEffect(() => {
     connectToRoom();
-  }, []);
+  }, [connectToRoom]);
 
   return (
     <div className="live-chat-room">
