@@ -146,10 +146,10 @@ class ChatRoom extends Room {
   }
 
   getConversationHistory() {
-    // Get last 50 messages for sliding window
+    // Get last 15 messages for default sliding window
     const messages = Array.from(this.state.messages.values())
       .sort((a, b) => a.timestamp - b.timestamp)
-      .slice(-50); // Last 50 messages for sliding window
+      .slice(-15); // Last 15 messages for default sliding window
 
     return messages.map(msg => ({
       username: msg.username,

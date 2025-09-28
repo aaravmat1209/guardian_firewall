@@ -58,13 +58,13 @@ class GuardianDetector:
         ])
 
 
-    def _format_conversation_context(self, messages: List[MessageData]) -> str:
-        """Format the last 50 messages into a readable conversation context"""
+    def _format_conversation_context(self, messages: List[MessageData], context_size: int = 15) -> str:
+        """Format conversation messages into a readable context with dynamic sizing"""
         if not messages:
             return "No previous conversation context."
 
-        # Take last 50 messages
-        recent_messages = messages[-50:] if len(messages) > 50 else messages
+        # Take the specified number of recent messages
+        recent_messages = messages[-context_size:] if len(messages) > context_size else messages
 
         formatted_lines = []
         for msg in recent_messages:
@@ -124,7 +124,7 @@ class GuardianDetector:
 
     def analyze_message(self, current_message: str, conversation_history: List[Dict[str, Any]] = None) -> MessageClassification:
         """
-        Analyze a message with sliding window of conversation context
+        Analyze a message with dynamic conversation context based on risk level
 
         Args:
             current_message: The latest message to analyze
@@ -147,13 +147,28 @@ class GuardianDetector:
                 except Exception:
                     continue
 
-        # Format conversation context
-        conversation_context = self._format_conversation_context(messages)
+        # Start with default context size of 15
+        initial_context_size = 15
+        conversation_context = self._format_conversation_context(messages, initial_context_size)
 
         # Analyze with Gemini
         llm_risk, llm_confidence, llm_explanation = self._analyze_with_gemini(
             current_message, conversation_context
         )
+
+        # If high risk detected, expand context and re-analyze
+        if llm_risk == "HIGH" and len(messages) > initial_context_size:
+            # Expand to 50 messages for deeper context analysis
+            expanded_context_size = min(50, len(messages))
+            expanded_conversation_context = self._format_conversation_context(messages, expanded_context_size)
+
+            # Re-analyze with expanded context
+            llm_risk, llm_confidence, llm_explanation = self._analyze_with_gemini(
+                current_message, expanded_conversation_context
+            )
+
+            # Add note about expanded analysis
+            llm_explanation += " (Analyzed with expanded conversation history due to high risk detection)"
 
         # Calculate final risk using only Gemini
         final_level, final_score = self._calculate_final_risk(
@@ -171,9 +186,13 @@ class GuardianDetector:
         }
         action = action_map.get(final_level, "flag")
 
+        # Return summary context (last 10 messages)
+        summary_context_size = min(10, len(messages))
+        summary_context = [msg.text for msg in messages[-summary_context_size:]]
+
         return MessageClassification(
             message=current_message,
-            conversation_context=[msg.text for msg in messages[-10:]],  # Last 10 for summary
+            conversation_context=summary_context,
             llm_risk=llm_risk,
             llm_confidence=llm_confidence,
             final_level=final_level,

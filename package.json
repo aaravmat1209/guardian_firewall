@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "dependencies": {
     "@colyseus/core": "^0.16.21",
     "colyseus": "^0.16.4",
