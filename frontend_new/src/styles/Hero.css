@@ -1,0 +1,531 @@
+/* Hero Component - EXACT Quantra Clone */
+
+.hero {
+  position: relative;
+  /* EXACT Quantra height calculation */
+  min-height: calc(100vh - 80px);
+  height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-black);
+  overflow: hidden;
+  /* EXACT Quantra positioning */
+  margin-top: 80px;
+}
+
+/* Container - EXACT Quantra layout */
+.hero-container {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+/* Content Section - Centered Clean Layout */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+
+
+/* Guardian protective pulse - gentle breathing without glow */
+@keyframes guardianPulse {
+  0% {
+    transform: scale(1);
+  }
+  
+  50% {
+    transform: scale(1.03);
+  }
+  
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Protection aura animation - radiating guardian energy */
+@keyframes protectionAura {
+  0% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+  
+  100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* Content Section - Right Side */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+/* Main Title - Centered and Prominent */
+.hero-title {
+  margin-bottom: var(--spacing-12);
+  line-height: 1;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Guardian Text Image in Hero */
+.hero-guardian-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all var(--duration-700) var(--ease-out);
+}
+
+.hero-guardian-image {
+  height: 250px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 0;
+}
+
+.hero-ai-text {
+  font-size: 64px;
+  font-family: 'Anton', 'Oswald', 'Roboto Condensed', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-red);
+  line-height: 64px;
+}
+
+.hero-title-line {
+  display: block;
+  /* Match "MEET YOUR GUARDIAN ANGEL" font - Space Grotesk */
+  font-size: 64px;
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-white);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all var(--duration-700) var(--ease-out);
+  /* Adjusted line height for bigger text */
+  line-height: 64px;
+  margin-bottom: 8px;
+}
+
+.hero-title-line:last-child {
+  margin-bottom: 0;
+}
+
+.hero-title-accent {
+  color: var(--color-red);
+}
+
+/* EXACT Quantra animation timing */
+.hero-title.animate .hero-title-line:nth-child(1) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.hero-title.animate .hero-title-line:nth-child(2) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.4s;
+}
+
+.hero-title.animate .hero-title-line:nth-child(3) {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.6s;
+}
+
+.hero-title.animate .hero-guardian-text {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+/* Subtitle - Centered with More Spacing */
+.hero-subtitle {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: var(--spacing-16);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.hero-subtitle.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.8s;
+}
+
+/* Action Buttons - Centered Clean Layout */
+.hero-actions {
+  display: flex;
+  gap: var(--spacing-4);
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--spacing-12);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.hero-actions.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1s;
+}
+
+.hero-btn-primary,
+.hero-btn-secondary {
+  /* Slightly smaller buttons for better proportions */
+  padding: 14px 28px;
+  font-size: 13px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Stats - Centered Layout */
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-8);
+  margin-bottom: var(--spacing-16);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.hero-stats.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 1.2s;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-number {
+  /* Smaller stat numbers for better balance */
+  font-size: 28px;
+  line-height: 28px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-red);
+  margin-bottom: var(--spacing-1);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.hero-stat-label {
+  /* Slightly smaller stat labels */
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: var(--font-weight-medium);
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+.hero-stat-divider {
+  width: 1px;
+  height: 32px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Scroll Indicator - EXACT Quantra positioning */
+.hero-scroll {
+  position: absolute;
+  bottom: var(--spacing-8);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+  opacity: 0;
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.hero-scroll.animate {
+  opacity: 1;
+  transition-delay: 1.5s;
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 24px;
+  background: linear-gradient(to bottom, transparent, var(--color-red), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+.hero-scroll-text {
+  /* EXACT Quantra scroll text */
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: var(--font-weight-medium);
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-widest);
+}
+
+@keyframes scrollPulse {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scaleY(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scaleY(1.2); 
+  }
+}
+
+/* Background Elements - EXACT Quantra */
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.hero-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  /* EXACT Quantra grid animation */
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { 
+    transform: translate(0, 0); 
+  }
+  100% { 
+    transform: translate(40px, 40px); 
+  }
+}
+
+/* Responsive Design - EXACT Quantra breakpoints */
+@media (max-width: 1024px) {
+  .hero-layout {
+    gap: var(--spacing-6);
+    max-width: 1200px;
+  }
+  
+  .hero-logo-image {
+    max-height: 350px;
+  }
+  
+  .hero-title-line {
+    font-size: 56px;
+    line-height: 56px;
+  }
+  
+  .hero-subtitle {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  
+  .hero-stat-number {
+    font-size: 24px;
+    line-height: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+  }
+  
+  .hero-container {
+    padding: 0 var(--spacing-4);
+  }
+  
+  /* Switch to single column layout on mobile */
+  .hero-layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-8);
+    text-align: center;
+  }
+  
+  .hero-content {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .hero-logo {
+    order: -1;
+    margin-bottom: var(--spacing-4);
+  }
+  
+  .hero-logo-image {
+    max-height: 280px;
+    /* Reduce upward shift on mobile */
+    margin-top: -15px;
+  }
+  
+  .hero-title-line {
+    font-size: 48px;
+    line-height: 48px;
+    margin-bottom: 6px;
+  }
+  
+  .hero-subtitle {
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: var(--spacing-8);
+  }
+  
+  .hero-actions {
+    flex-direction: column;
+    gap: var(--spacing-3);
+    margin-bottom: var(--spacing-12);
+    align-items: center;
+  }
+  
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 28px;
+  }
+  
+  .hero-stats {
+    flex-direction: column;
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-12);
+  }
+  
+  .hero-stat-divider {
+    display: none;
+  }
+  
+  .hero-stat-number {
+    font-size: 28px;
+    line-height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title-line {
+    font-size: 36px;
+    line-height: 36px;
+  }
+  
+  .hero-subtitle {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .hero-container {
+    padding: 0 var(--spacing-4);
+  }
+  
+  .hero-btn-primary,
+  .hero-btn-secondary {
+    padding: 12px 24px;
+    font-size: 12px;
+  }
+}
+
+/* Accessibility - EXACT Quantra standards */
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-line,
+  .hero-subtitle,
+  .hero-actions,
+  .hero-stats,
+  .hero-scroll,
+  .hero-grid,
+  .hero-logo-image {
+    animation: none !important;
+    transition: none;
+  }
+  
+  .hero-title.animate .hero-title-line,
+  .hero-subtitle.animate,
+  .hero-actions.animate,
+  .hero-stats.animate,
+  .hero-scroll.animate {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .hero-logo-image {
+    transform: none !important;
+    margin-top: -30px; /* Keep upward positioning even without animation */
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .hero-grid {
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  }
+  
+  .hero-subtitle {
+    color: var(--color-white);
+  }
+}
+
+/* Perfect centering - EXACT Quantra */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Smooth transitions - EXACT Quantra timing */
+.hero-title-line,
+.hero-subtitle,
+.hero-actions,
+.hero-stats,
+.hero-scroll {
+  will-change: opacity, transform;
+}
