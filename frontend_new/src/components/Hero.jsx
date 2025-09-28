@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Hero.css';
+import pqndProLogo from '../assets/images/pqnd_pro.png';
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -21,13 +22,13 @@ const Hero = () => {
             {/* Simple Tagline Only */}
             <h1 className={`hero-title ${isVisible ? 'animate' : ''}`}>
               <div className="hero-guardian-text">
-                <img src="/pqnd_pro.png" alt="GUARDIAN" className="hero-guardian-image" />
+                <img src={pqndProLogo} alt="GUARDIAN" className="hero-guardian-image" />
               </div>
               <span className="hero-title-line hero-title-accent">
-                PROTECTING CHILDREN
+                REAL TIME PROTECTION
               </span>
               <span className="hero-title-line">
-                WHERE HARM BEGINS
+                FOR YOUNG GAMERS.
               </span>
             </h1>
         </div>

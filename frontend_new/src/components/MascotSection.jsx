@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './MascotSection.css';
+import guardianLogo from '../assets/images/guardian_logo.png';
 
 const MascotSection = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -52,7 +53,7 @@ const MascotSection = () => {
           {/* Large Mascot Display */}
           <div className={`mascot-display ${isVisible ? 'animate' : ''}`}>
             <img 
-              src="/guardian_logo.png" 
+              src={guardianLogo} 
               alt="Guardian AI Angel Mascot" 
               className="mascot-hero-image"
             />
@@ -98,23 +99,6 @@ const MascotSection = () => {
           </div>
         </div>
 
-        {/* Mascot Stats */}
-        <div className={`mascot-stats ${isVisible ? 'animate' : ''}`}>
-          <div className="mascot-stat">
-            <div className="mascot-stat-number">1M+</div>
-            <div className="mascot-stat-label">CHILDREN PROTECTED</div>
-          </div>
-          <div className="mascot-stat-divider"></div>
-          <div className="mascot-stat">
-            <div className="mascot-stat-number">99.7%</div>
-            <div className="mascot-stat-label">THREAT DETECTION</div>
-          </div>
-          <div className="mascot-stat-divider"></div>
-          <div className="mascot-stat">
-            <div className="mascot-stat-number">0</div>
-            <div className="mascot-stat-label">SUCCESSFUL ATTACKS</div>
-          </div>
-        </div>
 
         {/* Mascot Quote */}
         <div className={`mascot-quote ${isVisible ? 'animate' : ''}`}>

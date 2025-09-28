@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/Navbar.css';
+import guardianLogo from '../assets/images/guardian_logo.png';
 
-const Navbar = () => {
+const Navbar = ({ onGetStarted }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -24,41 +25,36 @@ const Navbar = () => {
         {/* Logo with Mascot - EXACT Quantra positioning */}
         <div className="navbar-logo">
           <img 
-            src="/guardian_logo.png" 
+            src={guardianLogo} 
             alt="Guardian AI Angel" 
             className="navbar-mascot"
           />
         </div>
 
         {/* Navigation Links - EXACT Quantra spacing */}
-        <ul className="navbar-menu">
-          <li className="navbar-item">
-            <a href="#meet-guardian" className="navbar-link">
-              MASCOT
-            </a>
-          </li>
-          <li className="navbar-item">
-            <a href="#demo" className="navbar-link">
-              DEMO
-            </a>
-          </li>
-          <li className="navbar-item">
-            <a href="#features" className="navbar-link">
-              FEATURES
-            </a>
-          </li>
-          <li className="navbar-item">
-            <a href="#contact" className="navbar-link">
-              CONTACT
-            </a>
-          </li>
-        </ul>
+                <ul className="navbar-menu">
+                  <li className="navbar-item">
+                    <a href="#meet-guardian" className="navbar-link">
+                      MASCOT
+                    </a>
+                  </li>
+                  <li className="navbar-item">
+                    <a href="#demo" className="navbar-link">
+                      DEMO
+                    </a>
+                  </li>
+                  <li className="navbar-item">
+                    <a href="#about" className="navbar-link">
+                      ABOUT
+                    </a>
+                  </li>
+                </ul>
 
         {/* CTA Button - EXACT Quantra style */}
         <div className="navbar-actions">
-          <a href="#get-started" className="btn btn-primary navbar-btn">
+          <button onClick={onGetStarted} className="btn btn-primary navbar-btn">
             GET STARTED
-          </a>
+          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -83,16 +79,13 @@ const Navbar = () => {
             <li>
               <a href="#demo" onClick={toggleMobileMenu}>DEMO</a>
             </li>
+                    <li>
+                      <a href="#about" onClick={toggleMobileMenu}>ABOUT</a>
+                    </li>
             <li>
-              <a href="#features" onClick={toggleMobileMenu}>FEATURES</a>
-            </li>
-            <li>
-              <a href="#contact" onClick={toggleMobileMenu}>CONTACT</a>
-            </li>
-            <li>
-              <a href="#get-started" className="btn btn-primary" onClick={toggleMobileMenu}>
+              <button className="btn btn-primary" onClick={() => { onGetStarted(); toggleMobileMenu(); }}>
                 GET STARTED
-              </a>
+              </button>
             </li>
           </ul>
         </div>

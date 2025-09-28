@@ -83,26 +83,26 @@
   letter-spacing: var(--letter-spacing-wide);
 }
 
-/* Threat styling - EXACT Quantra glow effect */
+/* Threat styling - Subtle warning effect */
 .message-threat .message-content {
   border: 1px solid var(--color-red);
   box-shadow: var(--shadow-red-glow);
-  animation: threatPulse 2s ease-in-out infinite;
+  animation: threatPulse 4s ease-in-out infinite;
 }
 
 .message-threat-indicator {
   font-size: var(--font-size-lg);
   margin-left: var(--spacing-2);
-  animation: warningBlink 1s ease-in-out infinite;
+  animation: warningBlink 3s ease-in-out infinite;
 }
 
-/* Threat animations */
+/* Subtle threat animations */
 @keyframes threatPulse {
   0%, 100% {
     box-shadow: var(--shadow-red-glow);
   }
   50% {
-    box-shadow: var(--shadow-red-intense);
+    box-shadow: 0 0 8px rgba(220, 38, 38, 0.3);
   }
 }
 
@@ -111,7 +111,7 @@
     opacity: 1;
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.8;
   }
 }
 

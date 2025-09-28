@@ -107,11 +107,12 @@ const ChatDemo = () => {
         </button>
       </div>
 
-      {/* Main Demo Interface */}
-      <div className="chat-demo-interface">
-        {isLiveMode ? (
-          <LiveChatRoom />
-        ) : (
+      {/* Live Chat Mode - Full Width */}
+      {isLiveMode ? (
+        <LiveChatRoom />
+      ) : (
+        /* Main Demo Interface */
+        <div className="chat-demo-interface">
           <>
             {/* Chat Window */}
         <div className="chat-window">
@@ -178,8 +179,8 @@ const ChatDemo = () => {
           />
         </div>
           </>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
