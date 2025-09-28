@@ -1,0 +1,334 @@
+/* Navbar Component - EXACT Quantra Clone */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--duration-300) var(--ease-out);
+  /* EXACT Quantra height and padding */
+  height: 80px;
+  padding: 0;
+}
+
+.navbar-scrolled {
+  background-color: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-sm);
+}
+
+.navbar-container {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  /* EXACT Quantra positioning */
+  position: relative;
+}
+
+/* Logo with Mascot - EXACT Quantra Style */
+.navbar-logo {
+  flex-shrink: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.navbar-mascot {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.navbar-mascot:hover {
+  transform: scale(1.1);
+}
+
+/* Guardian Text Image in Navbar */
+.navbar-guardian-text {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 0;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.navbar-guardian-text:hover {
+  transform: scale(1.05);
+}
+
+.logo-accent {
+  color: var(--color-red);
+  position: relative;
+}
+
+/* Navigation Menu - EXACT Quantra positioning */
+.navbar-menu {
+  display: flex;
+  list-style: none;
+  align-items: center;
+  gap: 48px; /* EXACT Quantra spacing */
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navbar-item {
+  position: relative;
+}
+
+.navbar-link {
+  font-size: 14px;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-white);
+  text-decoration: none;
+  padding: var(--spacing-2) 0;
+  position: relative;
+  transition: color var(--duration-200) var(--ease-out);
+  /* EXACT Quantra font specifications */
+  font-family: var(--font-family-primary);
+  line-height: 20px;
+}
+
+/* EXACT Quantra hover effect */
+.navbar-link::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--color-red);
+  transition: width var(--duration-300) var(--ease-out);
+}
+
+.navbar-link:hover {
+  color: var(--color-red);
+}
+
+.navbar-link:hover::before {
+  width: 100%;
+}
+
+/* Actions - EXACT Quantra positioning */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  flex-shrink: 0;
+}
+
+.navbar-btn {
+  /* EXACT Quantra button sizing */
+  padding: 12px 24px;
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wider);
+}
+
+/* Mobile Menu Button - EXACT Quantra */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-2);
+  z-index: 1001;
+  position: relative;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  width: 24px;
+  height: 18px;
+  position: relative;
+}
+
+.hamburger span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--color-white);
+  margin-bottom: 4px;
+  transition: all var(--duration-300) var(--ease-out);
+  transform-origin: center;
+}
+
+.hamburger span:last-child {
+  margin-bottom: 0;
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Mobile Menu - EXACT Quantra */
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--color-black);
+  transform: translateX(-100%);
+  transition: transform var(--duration-300) var(--ease-out);
+  padding-top: 120px;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.mobile-menu.active {
+  transform: translateX(0);
+}
+
+.mobile-menu-list {
+  list-style: none;
+  padding: 0 var(--spacing-6);
+  margin: 0;
+}
+
+.mobile-menu-list li {
+  margin-bottom: var(--spacing-8);
+}
+
+.mobile-menu-list a {
+  font-size: 24px;
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-white);
+  text-decoration: none;
+  display: block;
+  padding: var(--spacing-4) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.mobile-menu-list a:hover {
+  color: var(--color-red);
+  padding-left: var(--spacing-4);
+}
+
+.mobile-menu-list .btn {
+  display: inline-flex;
+  margin-top: var(--spacing-4);
+  font-size: 14px;
+  border-bottom: none;
+}
+
+/* Responsive Design - EXACT Quantra breakpoints */
+@media (max-width: 1024px) {
+  .navbar-container {
+    padding: 0 var(--spacing-5);
+  }
+  
+  .navbar-menu {
+    gap: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-menu,
+  .navbar-actions {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .navbar-container {
+    padding: 0 var(--spacing-4);
+  }
+  
+  .logo-text {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-container {
+    padding: 0 var(--spacing-4);
+  }
+  
+  .mobile-menu-list {
+    padding: 0 var(--spacing-4);
+  }
+  
+  .mobile-menu-list a {
+    font-size: 20px;
+  }
+}
+
+/* Accessibility - EXACT Quantra standards */
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .navbar-link::before,
+  .hamburger span,
+  .mobile-menu {
+    transition: none;
+  }
+}
+
+/* Focus states for keyboard navigation */
+.navbar-link:focus,
+.mobile-menu-btn:focus,
+.navbar-btn:focus {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .navbar {
+    border-bottom-color: var(--color-white);
+  }
+  
+  .navbar-link::before {
+    background-color: var(--color-white);
+  }
+}
+
+/* Perfect pixel alignment - EXACT Quantra */
+.navbar-container {
+  /* Ensure perfect centering */
+  box-sizing: border-box;
+}
+
+.navbar-logo,
+.navbar-menu,
+.navbar-actions {
+  /* Prevent layout shifts */
+  flex-shrink: 0;
+}
+
+/* Smooth scroll behavior when clicking nav links */
+html {
+  scroll-behavior: smooth;
+}
