@@ -1,0 +1,159 @@
+/* MessageBubble Component - EXACT Quantra styling */
+
+.message-bubble {
+  margin-bottom: var(--spacing-4);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all var(--duration-500) var(--ease-out);
+  animation-delay: var(--delay);
+}
+
+.message-bubble.message-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message-content {
+  max-width: 80%;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-lg);
+  position: relative;
+  /* EXACT Quantra font sizing */
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+}
+
+/* User messages - right aligned */
+.message-user {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.message-user .message-content {
+  background-color: var(--color-white);
+  color: var(--color-black);
+  margin-left: auto;
+}
+
+/* Other messages - left aligned */
+.message-other {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.message-other .message-content {
+  background-color: #1a1a1a;
+  color: var(--color-white);
+  margin-right: auto;
+}
+
+/* Author styling - EXACT Quantra typography */
+.message-author {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin-bottom: var(--spacing-1);
+  opacity: 0.7;
+}
+
+.message-user .message-author {
+  color: var(--color-gray);
+}
+
+.message-other .message-author {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Message text */
+.message-text {
+  font-weight: var(--font-weight-regular);
+  line-height: var(--line-height-base);
+}
+
+/* Risk indicator */
+.message-risk {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-red);
+  margin-top: var(--spacing-1);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+/* Threat styling - EXACT Quantra glow effect */
+.message-threat .message-content {
+  border: 1px solid var(--color-red);
+  box-shadow: var(--shadow-red-glow);
+  animation: threatPulse 2s ease-in-out infinite;
+}
+
+.message-threat-indicator {
+  font-size: var(--font-size-lg);
+  margin-left: var(--spacing-2);
+  animation: warningBlink 1s ease-in-out infinite;
+}
+
+/* Threat animations */
+@keyframes threatPulse {
+  0%, 100% {
+    box-shadow: var(--shadow-red-glow);
+  }
+  50% {
+    box-shadow: var(--shadow-red-intense);
+  }
+}
+
+@keyframes warningBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive design - EXACT Quantra breakpoints */
+@media (max-width: 768px) {
+  .message-content {
+    max-width: 90%;
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-xs);
+  }
+  
+  .message-author {
+    font-size: 10px;
+  }
+  
+  .message-risk {
+    font-size: 10px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .message-bubble,
+  .message-threat .message-content,
+  .message-threat-indicator {
+    animation: none;
+    transition: none;
+  }
+  
+  .message-bubble.message-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .message-user .message-content {
+    border: 1px solid var(--color-black);
+  }
+  
+  .message-other .message-content {
+    border: 1px solid var(--color-white);
+  }
+}

@@ -1,0 +1,194 @@
+/* DemoControls Component - EXACT Quantra styling */
+
+.demo-controls {
+  margin-bottom: var(--spacing-8);
+}
+
+.demo-controls-title {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-6);
+  text-align: center;
+}
+
+.demo-controls-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+/* Demo buttons - EXACT Quantra button styling */
+.demo-btn {
+  position: relative;
+  width: 100%;
+  padding: var(--spacing-4) var(--spacing-6);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  border-radius: var(--radius-md);
+  transition: all var(--duration-200) var(--ease-out);
+  overflow: hidden;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.demo-btn:not(:disabled):hover {
+  transform: translateY(-1px);
+}
+
+/* Primary button (Predator scenario) */
+.demo-btn.btn-primary {
+  background-color: var(--color-red);
+  border-color: var(--color-red);
+}
+
+.demo-btn.btn-primary:not(:disabled):hover {
+  background-color: var(--color-red-bright);
+  border-color: var(--color-red-bright);
+  box-shadow: var(--shadow-red-glow);
+}
+
+/* Playing state */
+.btn-playing {
+  background-color: var(--color-red-bright);
+  box-shadow: var(--shadow-red-glow);
+}
+
+.btn-playing .btn-text {
+  opacity: 0.7;
+}
+
+/* Playing indicator */
+.btn-playing-indicator {
+  position: absolute;
+  right: var(--spacing-4);
+  display: flex;
+  align-items: center;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.loading-dots span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  animation: loadingDot 1.4s ease-in-out infinite both;
+}
+
+.loading-dots span:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.loading-dots span:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+@keyframes loadingDot {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Reset button special styling */
+.demo-btn-reset {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.demo-btn-reset:not(:disabled):hover {
+  border-color: var(--color-white);
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Info section */
+.demo-controls-info {
+  text-align: center;
+  padding: var(--spacing-4);
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+}
+
+.demo-info-text {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-base);
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+/* Responsive design - EXACT Quantra breakpoints */
+@media (max-width: 768px) {
+  .demo-controls-title {
+    font-size: var(--font-size-base);
+  }
+  
+  .demo-btn {
+    padding: var(--spacing-3) var(--spacing-4);
+    font-size: var(--font-size-xs);
+  }
+  
+  .demo-info-text {
+    font-size: var(--font-size-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-controls-buttons {
+    gap: var(--spacing-3);
+  }
+  
+  .demo-btn {
+    min-height: 44px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .demo-btn,
+  .loading-dots span {
+    animation: none;
+    transition: none;
+  }
+  
+  .demo-btn:not(:disabled):hover {
+    transform: none;
+  }
+}
+
+/* Focus states for keyboard navigation */
+.demo-btn:focus {
+  outline: 2px solid var(--color-red);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .demo-controls-info {
+    border-color: var(--color-white);
+  }
+  
+  .demo-btn {
+    border-width: 2px;
+  }
+}

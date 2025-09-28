@@ -1,0 +1,304 @@
+/* DemoSection Component - EXACT Quantra section styling */
+
+.demo-section {
+  position: relative;
+  background-color: var(--color-black);
+  /* EXACT Quantra section padding */
+  padding: var(--spacing-24) 0;
+  overflow: hidden;
+}
+
+/* Red gradient divider - EXACT Quantra style */
+.demo-section-divider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-red), transparent);
+  opacity: 0;
+  transform: scaleX(0);
+  transition: all var(--duration-1000) var(--ease-out);
+}
+
+.demo-section-visible .demo-section-divider {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+/* Container - EXACT Quantra layout */
+.demo-section-container {
+  max-width: var(--container-xl);
+  margin: 0 auto;
+  padding: 0 var(--spacing-6);
+}
+
+/* Mascot-Hosted Section Header */
+.demo-section-header {
+  text-align: center;
+  margin-bottom: var(--spacing-16);
+}
+
+/* Mascot Introduction */
+.demo-mascot-intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-8);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.demo-mascot-intro.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.demo-mascot-image {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(220, 38, 38, 0.3));
+}
+
+.demo-mascot-speech {
+  position: relative;
+}
+
+.speech-bubble {
+  background-color: var(--color-red);
+  color: var(--color-white);
+  padding: var(--spacing-4) var(--spacing-6);
+  border-radius: var(--radius-xl);
+  position: relative;
+  max-width: 300px;
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid var(--color-red);
+}
+
+.speech-bubble p {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+  line-height: var(--line-height-base);
+}
+
+.demo-section-title {
+  /* EXACT Quantra section title styling */
+  font-size: var(--font-size-5xl);
+  line-height: var(--line-height-5xl);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  color: var(--color-white);
+  margin-bottom: var(--spacing-6);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all var(--duration-700) var(--ease-out);
+}
+
+.demo-section-title.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.demo-section-subtitle {
+  /* EXACT Quantra subtitle styling */
+  font-size: var(--font-size-xl);
+  line-height: var(--line-height-xl);
+  font-weight: var(--font-weight-regular);
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.demo-section-subtitle.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.4s;
+}
+
+/* Demo Content */
+.demo-section-content {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: all var(--duration-700) var(--ease-out);
+}
+
+.demo-section-content.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.6s;
+}
+
+/* Background elements - EXACT Quantra */
+.demo-section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, rgba(220, 38, 38, 0.03) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: sectionGlow 8s ease-in-out infinite;
+}
+
+@keyframes sectionGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+/* Responsive design - EXACT Quantra breakpoints */
+@media (max-width: 1024px) {
+  .demo-section {
+    padding: var(--spacing-20) 0;
+  }
+  
+  .demo-section-container {
+    padding: 0 var(--spacing-5);
+  }
+  
+  .demo-section-title {
+    font-size: var(--font-size-4xl);
+    line-height: var(--line-height-4xl);
+  }
+  
+  .demo-section-subtitle {
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+  }
+  
+  .demo-section-header {
+    margin-bottom: var(--spacing-12);
+  }
+}
+
+@media (max-width: 768px) {
+  .demo-section {
+    padding: var(--spacing-16) 0;
+  }
+  
+  .demo-section-container {
+    padding: 0 var(--spacing-4);
+  }
+  
+  .demo-section-title {
+    font-size: var(--font-size-3xl);
+    line-height: var(--line-height-3xl);
+  }
+  
+  .demo-section-subtitle {
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+  }
+  
+  .demo-section-header {
+    margin-bottom: var(--spacing-10);
+  }
+}
+
+@media (max-width: 480px) {
+  .demo-section {
+    padding: var(--spacing-12) 0;
+  }
+  
+  .demo-section-container {
+    padding: 0 var(--spacing-4);
+  }
+  
+  .demo-section-title {
+    font-size: var(--font-size-2xl);
+    line-height: var(--line-height-2xl);
+  }
+  
+  .demo-section-subtitle {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
+  }
+  
+  .demo-section-header {
+    margin-bottom: var(--spacing-8);
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .demo-section-divider,
+  .demo-section-title,
+  .demo-section-subtitle,
+  .demo-section-content,
+  .demo-section::before {
+    animation: none;
+    transition: none;
+  }
+  
+  .demo-section-visible .demo-section-divider {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .demo-section-title.animate,
+  .demo-section-subtitle.animate,
+  .demo-section-content.animate {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .demo-section-divider {
+    background: linear-gradient(90deg, transparent, var(--color-white), transparent);
+  }
+  
+  .demo-section::before {
+    display: none;
+  }
+  
+  .demo-section-subtitle {
+    color: var(--color-white);
+  }
+}
+
+/* Perfect section spacing - EXACT Quantra */
+.demo-section + .demo-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Smooth scroll behavior */
+.demo-section {
+  scroll-margin-top: 80px;
+}
+
+/* Intersection observer optimization */
+.demo-section-visible {
+  /* Trigger GPU acceleration for smoother animations */
+  will-change: transform, opacity;
+}
