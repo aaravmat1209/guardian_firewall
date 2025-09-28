@@ -36,26 +36,6 @@ _prompt = ChatPromptTemplate.from_messages([
      ("Human", "Classify the following message: {message}")
 ])
 
-
-from dotenv import load_dotenv
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
-from pydantic import BaseModel
-import os
-
-load_dotenv()  # Make sure GOOGLE_API_KEY is loaded
-
-GEMINI_API_KEY = os.getenv("GOOGLE_API_KEY")
-
-class MessageClassification(BaseModel):
-    message: str
-    llm_risk: str
-    llm_confidence: float
-    hf_score: float
-    final_level: str
-    action: str
-
-
 # ---------------- Test messages ----------------
 test_messages = [
     "Hey, want to join my team for this quest?",
