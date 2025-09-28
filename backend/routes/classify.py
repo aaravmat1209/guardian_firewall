@@ -4,7 +4,7 @@ from typing import List, Optional
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from risk.fuse import RiskFusion
+from risk.whole_detector import get_detector
 
 router = APIRouter(prefix="/classify", tags=["classification"])
 
@@ -17,10 +17,11 @@ class ClassificationResponse(BaseModel):
     risk_level: str
     confidence_score: float
     explanations: List[str]
-    suggestions: List[str]
+    action: str
     should_pause: bool
+    llm_confidence: float
 
-risk_fusion = RiskFusion()
+guardian_detector = get_detector()
 
 @router.post("/message", response_model=ClassificationResponse)
 async def classify_message(request: MessageRequest):
@@ -28,17 +29,18 @@ async def classify_message(request: MessageRequest):
     Classify a single message for grooming risk
     """
     try:
-        result = risk_fusion.analyze_message(
+        result = guardian_detector.analyze_message(
             request.text,
             request.conversation_history
         )
 
         return ClassificationResponse(
-            risk_level=result["level"],
-            confidence_score=result["score"],
-            explanations=result["explanations"],
-            suggestions=result.get("suggestions", []),
-            should_pause=result["level"] in ["medium", "high"]
+            risk_level=result.final_level.lower(),
+            confidence_score=result.final_score,
+            explanations=result.explanations,
+            action=result.action,
+            should_pause=result.final_level in ["MEDIUM", "HIGH"],
+            llm_confidence=result.llm_confidence
         )
 
     except Exception as e:
@@ -54,12 +56,11 @@ async def classify_conversation(messages: List[dict]):
         if not messages:
             return {"risk_level": "low", "trend": "stable"}
 
-        # Get risk scores for recent messages
-        recent_scores = []
-        for i, msg in enumerate(messages[-10:]):  # Last 10 messages
-            history = messages[:len(messages)-10+i] if i > 0 else []
-            result = risk_fusion.analyze_message(msg.get("text", ""), history)
-            recent_scores.append(result["score"])
+        # Analyze the last message with full conversation context
+        last_message = messages[-1].get("text", "")
+        result = guardian_detector.analyze_message(last_message, messages[:-1])
+
+        recent_scores = [result.final_score]
 
         # Determine trend
         if len(recent_scores) > 1:
