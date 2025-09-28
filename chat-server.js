@@ -115,7 +115,7 @@ class ChatRoom extends Room {
         },
         body: JSON.stringify({
           text: messageData.text,
-          conversation_history: this.getRecentMessages(),
+          conversation_history: this.getConversationHistory(),
           user_id: player.username
         })
       });
@@ -145,15 +145,16 @@ class ChatRoom extends Room {
     }
   }
 
-  getRecentMessages() {
+  getConversationHistory() {
+    // Get last 50 messages for sliding window
     const messages = Array.from(this.state.messages.values())
       .sort((a, b) => a.timestamp - b.timestamp)
-      .slice(-10); // Last 10 messages
+      .slice(-50); // Last 50 messages for sliding window
 
     return messages.map(msg => ({
-      role: "user",
+      username: msg.username,
       text: msg.text,
-      username: msg.username
+      timestamp: msg.timestamp
     }));
   }
 

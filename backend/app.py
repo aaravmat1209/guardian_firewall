@@ -5,7 +5,7 @@ import uvicorn
 import json
 from datetime import datetime
 from routes.classify import router as classify_router
-from risk.fuse import RiskFusion
+from risk.whole_detector import get_detector
 
 # Simple lifespan without database for now
 @asynccontextmanager
@@ -50,7 +50,7 @@ class ConnectionManager:
                 pass
 
 manager = ConnectionManager()
-risk_fusion = RiskFusion()
+guardian_detector = get_detector()
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -60,8 +60,8 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             message_data = json.loads(data)
 
-            # Process message through risk engine
-            risk_result = risk_fusion.analyze_message(
+            # Process message through new Guardian detector
+            risk_result = guardian_detector.analyze_message(
                 message_data.get("text", ""),
                 message_data.get("conversation_history", [])
             )
@@ -69,17 +69,20 @@ async def websocket_endpoint(websocket: WebSocket):
             # Broadcast risk update
             await manager.broadcast({
                 "type": "risk_update",
-                "level": risk_result["level"],
-                "score": risk_result["score"],
-                "explanations": risk_result["explanations"]
+                "level": risk_result.final_level.lower(),
+                "score": risk_result.final_score,
+                "explanations": risk_result.explanations,
+                "action": risk_result.action,
+                "llm_confidence": risk_result.llm_confidence
             })
 
             # If high risk, trigger safety pause
-            if risk_result["level"] == "high":
+            if risk_result.final_level == "HIGH":
                 await manager.broadcast({
                     "type": "safety_pause",
-                    "message": "This message may contain inappropriate content. Please review before sending.",
-                    "suggestions": risk_result.get("suggestions", [])
+                    "message": "⚠️ High-risk content detected by Guardian AI. Please review before sending.",
+                    "explanations": risk_result.explanations,
+                    "action": risk_result.action
                 })
 
     except WebSocketDisconnect:
