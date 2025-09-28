@@ -1,5 +1,38 @@
 /* ChatDemo Component - EXACT Quantra styling */
 
+/* Demo Mode Toggle */
+.demo-mode-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+.mode-btn {
+  padding: 8px 16px;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-btn:hover {
+  background: #2a2a2a;
+  color: #FFFFFF;
+}
+
+.mode-btn.active {
+  background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
+  color: #FFFFFF;
+  border-color: #DC2626;
+}
+
 .chat-demo {
   width: 100%;
 }

@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import MessageBubble from './MessageBubble';
 import ThreatMeter from './ThreatMeter';
 import DemoControls from './DemoControls';
+import LiveChatRoom from './LiveChatRoom';
 import './ChatDemo.css';
 
 const ChatDemo = () => {
@@ -12,6 +13,7 @@ const ChatDemo = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentScenario, setCurrentScenario] = useState(null);
   const [visibleMessages, setVisibleMessages] = useState([]);
+  const [isLiveMode, setIsLiveMode] = useState(false);
   const chatContainerRef = useRef(null);
 
   // Scenario data
@@ -89,9 +91,29 @@ const ChatDemo = () => {
         currentScenario={currentScenario}
       />
 
+      {/* Mode Toggle */}
+      <div className="demo-mode-toggle">
+        <button 
+          className={`mode-btn ${!isLiveMode ? 'active' : ''}`}
+          onClick={() => setIsLiveMode(false)}
+        >
+          📊 DEMO MODE
+        </button>
+        <button 
+          className={`mode-btn ${isLiveMode ? 'active' : ''}`}
+          onClick={() => setIsLiveMode(true)}
+        >
+          🔴 LIVE CHAT
+        </button>
+      </div>
+
       {/* Main Demo Interface */}
       <div className="chat-demo-interface">
-        {/* Chat Window */}
+        {isLiveMode ? (
+          <LiveChatRoom />
+        ) : (
+          <>
+            {/* Chat Window */}
         <div className="chat-window">
           <div className="chat-header">
             <div className="chat-game-info">
@@ -155,6 +177,8 @@ const ChatDemo = () => {
             isActive={messages.length > 0}
           />
         </div>
+          </>
+        )}
       </div>
     </div>
   );

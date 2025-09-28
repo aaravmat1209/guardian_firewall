@@ -106,40 +106,51 @@ class ChatRoom extends Room {
     // Add to room state
     this.state.messages.set(messageId, chatMessage);
 
+    // Simulate Guardian AI analysis for demo purposes
     try {
-      // Send to Guardian AI for analysis
-      const response = await fetch('http://localhost:8000/api/classify/message', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: messageData.text,
-          conversation_history: this.getConversationHistory(),
-          user_id: player.username
-        })
+      // Simulate risk analysis based on message content
+      let riskLevel = "low";
+      let riskScore = 0;
+      
+      const messageText = messageData.text.toLowerCase();
+      
+      // Simple keyword-based risk detection for demo
+      if (messageText.includes('age') || messageText.includes('old') || messageText.includes('young')) {
+        riskLevel = "medium";
+        riskScore = 45;
+      }
+      
+      if (messageText.includes('discord') || messageText.includes('snapchat') || messageText.includes('instagram')) {
+        riskLevel = "high";
+        riskScore = 75;
+      }
+      
+      if (messageText.includes('secret') || messageText.includes('picture') || messageText.includes('photo')) {
+        riskLevel = "high";
+        riskScore = 90;
+      }
+      
+      if (messageText.includes('sexy') || messageText.includes('hot') || messageText.includes('cute')) {
+        riskLevel = "high";
+        riskScore = 85;
+      }
+
+      // Update message with simulated risk analysis
+      chatMessage.riskLevel = riskLevel;
+      chatMessage.riskScore = riskScore;
+
+      // Broadcast risk update to all clients
+      this.broadcast("risk_update", {
+        messageId: messageId,
+        riskLevel: riskLevel,
+        riskScore: riskScore,
+        explanations: [`Simulated analysis: ${riskLevel} risk detected`],
+        shouldPause: riskLevel === "high"
       });
 
-      if (response.ok) {
-        const result = await response.json();
-
-        // Update message with risk analysis
-        chatMessage.riskLevel = result.risk_level;
-        chatMessage.riskScore = result.confidence_score;
-
-        // Broadcast risk update to all clients
-        this.broadcast("risk_update", {
-          messageId: messageId,
-          riskLevel: result.risk_level,
-          riskScore: result.confidence_score,
-          explanations: result.explanations,
-          shouldPause: result.should_pause
-        });
-
-        console.log(`Risk analysis: ${result.risk_level} (${result.confidence_score})`);
-      }
+      console.log(`Simulated risk analysis: ${riskLevel} (${riskScore}%)`);
     } catch (error) {
-      console.error('Error analyzing message:', error);
+      console.error('Error in simulated analysis:', error);
       chatMessage.riskLevel = "error";
       chatMessage.riskScore = 0;
     }
