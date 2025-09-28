@@ -77,8 +77,6 @@ class GuardianDetector:
         self.enable_adaptive_context = True
 
 
-
-
     def _format_conversation_context(self, messages: List[MessageData]) -> str:
         if not messages:
             return "No previous conversation context."
