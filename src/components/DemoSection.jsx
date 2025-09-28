@@ -41,13 +41,26 @@ const DemoSection = () => {
       <div className="demo-section-divider"></div>
       
       <div className="demo-section-container">
-        {/* Section Header - EXACT Quantra typography */}
+        {/* Mascot-Hosted Section Header */}
         <div className="demo-section-header">
+          <div className={`demo-mascot-intro ${isVisible ? 'animate' : ''}`}>
+            <img 
+              src="/mask.png" 
+              alt="Guardian Angel" 
+              className="demo-mascot-image"
+            />
+            <div className="demo-mascot-speech">
+              <div className="speech-bubble">
+                <p>"Let me show you how I protect children in real-time!"</p>
+              </div>
+            </div>
+          </div>
+          
           <h2 className={`demo-section-title ${isVisible ? 'animate' : ''}`}>
-            SEE GUARDIAN AI IN ACTION
+            GUARDIAN ANGEL DEMONSTRATION
           </h2>
           <p className={`demo-section-subtitle ${isVisible ? 'animate' : ''}`}>
-            Real-time threat detection demo
+            Watch our AI mascot detect and prevent online threats
           </p>
         </div>
 

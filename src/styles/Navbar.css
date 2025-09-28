@@ -36,23 +36,37 @@
   position: relative;
 }
 
-/* Logo - EXACT Quantra Style */
+/* Logo with Mascot - EXACT Quantra Style */
 .navbar-logo {
   flex-shrink: 0;
   z-index: 1001;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
 }
 
-.logo-text {
-  font-size: 20px;
-  font-weight: var(--font-weight-bold);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-white);
-  text-decoration: none;
+.navbar-mascot {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
   transition: all var(--duration-200) var(--ease-out);
-  /* EXACT Quantra font specifications */
-  font-family: var(--font-family-primary);
-  line-height: 1;
+}
+
+.navbar-mascot:hover {
+  transform: scale(1.1);
+}
+
+/* Guardian Text Image in Navbar */
+.navbar-guardian-text {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 0;
+  transition: all var(--duration-200) var(--ease-out);
+}
+
+.navbar-guardian-text:hover {
+  transform: scale(1.05);
 }
 
 .logo-accent {

@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
+import MascotSection from './components/MascotSection';
 import DemoSection from './components/DemoSection';
 import './styles/globals.css';
 
@@ -10,6 +11,7 @@ function App() {
       <Navbar />
       <main>
         <Hero />
+        <MascotSection />
         <DemoSection />
         {/* Future sections will be added here */}
         <section id="features" className="section">

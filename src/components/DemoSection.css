@@ -33,10 +33,68 @@
   padding: 0 var(--spacing-6);
 }
 
-/* Section Header - EXACT Quantra typography */
+/* Mascot-Hosted Section Header */
 .demo-section-header {
   text-align: center;
   margin-bottom: var(--spacing-16);
+}
+
+/* Mascot Introduction */
+.demo-mascot-intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-6);
+  margin-bottom: var(--spacing-8);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all var(--duration-500) var(--ease-out);
+}
+
+.demo-mascot-intro.animate {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+.demo-mascot-image {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 15px rgba(220, 38, 38, 0.3));
+}
+
+.demo-mascot-speech {
+  position: relative;
+}
+
+.speech-bubble {
+  background-color: var(--color-red);
+  color: var(--color-white);
+  padding: var(--spacing-4) var(--spacing-6);
+  border-radius: var(--radius-xl);
+  position: relative;
+  max-width: 300px;
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid var(--color-red);
+}
+
+.speech-bubble p {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  margin: 0;
+  line-height: var(--line-height-base);
 }
 
 .demo-section-title {

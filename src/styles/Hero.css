@@ -30,76 +30,16 @@
   height: 100%;
 }
 
-/* Hero Layout - Two Column Design */
-.hero-layout {
-  display: grid;
-  grid-template-columns: 45% 55%;
-  gap: var(--spacing-8);
+/* Content Section - Centered Clean Layout */
+.hero-content {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1400px;
+  text-align: center;
+  max-width: 900px;
   margin: 0 auto;
 }
 
-/* Logo Section - Left Side */
-.hero-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateX(-40px);
-  transition: all var(--duration-700) var(--ease-out);
-  position: relative;
-  /* Add perspective for enhanced 3D effect */
-  perspective: 1000px;
-  perspective-origin: center center;
-  /* Remove any borders or outlines */
-  border: none;
-  outline: none;
-}
-
-.hero-logo.animate {
-  opacity: 1;
-  transform: translateX(0);
-  transition-delay: 0.3s;
-}
-
-.hero-logo-image {
-  max-width: 100%;
-  height: auto;
-  max-height: 420px; /* Bigger logo */
-  object-fit: contain;
-  /* Blend the logo with subtle effects */
-  filter: drop-shadow(0 8px 25px rgba(220, 38, 38, 0.2));
-  transition: all var(--duration-500) var(--ease-out);
-  /* Slight transparency for better blending */
-  opacity: 0.95;
-  /* No animation - clean static mascot */
-  animation: none;
-  /* Shift logo upwards */
-  margin-top: -30px;
-  /* Remove any borders or outlines */
-  border: none;
-  outline: none;
-}
-
-.hero-logo-image:hover {
-  /* Subtle hover effect - no glow */
-  opacity: 1;
-  /* Very gentle scale on hover */
-  transform: scale(1.02);
-  transition: transform 0.4s ease-out, opacity 0.3s ease-out;
-  /* Ensure no borders on hover */
-  border: none !important;
-  outline: none !important;
-}
-
-
-
-/* Remove aura animation - clean mascot display */
-.hero-logo::before {
-  display: none;
-}
 
 
 /* Guardian protective pulse - gentle breathing without glow */
@@ -143,27 +83,57 @@
   text-align: left;
 }
 
-/* Main Title - EXACT Quantra typography */
+/* Main Title - Centered and Prominent */
 .hero-title {
-  margin-bottom: var(--spacing-8);
+  margin-bottom: var(--spacing-12);
   line-height: 1;
   overflow: hidden;
+  text-align: center;
+}
+
+/* Guardian Text Image in Hero */
+.hero-guardian-text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all var(--duration-700) var(--ease-out);
+}
+
+.hero-guardian-image {
+  height: 250px;
+  width: auto;
+  object-fit: contain;
+  margin-right: 0;
+}
+
+.hero-ai-text {
+  font-size: 64px;
+  font-family: 'Anton', 'Oswald', 'Roboto Condensed', sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-red);
+  line-height: 64px;
 }
 
 .hero-title-line {
   display: block;
-  /* Reduced font size to accommodate logo */
-  font-size: 48px;
+  /* Match "MEET YOUR GUARDIAN ANGEL" font - Space Grotesk */
+  font-size: 64px;
+  font-family: var(--font-family-primary);
   font-weight: var(--font-weight-bold);
   text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: var(--letter-spacing-tight);
   color: var(--color-white);
   opacity: 0;
   transform: translateY(40px);
   transition: all var(--duration-700) var(--ease-out);
-  /* Adjusted line height */
-  line-height: 48px;
-  margin-bottom: 6px;
+  /* Adjusted line height for bigger text */
+  line-height: 64px;
+  margin-bottom: 8px;
 }
 
 .hero-title-line:last-child {
@@ -193,17 +163,23 @@
   transition-delay: 0.6s;
 }
 
-/* Subtitle - Adjusted for logo layout */
+.hero-title.animate .hero-guardian-text {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
+}
+
+/* Subtitle - Centered with More Spacing */
 .hero-subtitle {
-  /* Slightly smaller font size for better balance */
   font-size: 18px;
   line-height: 26px;
   font-weight: var(--font-weight-regular);
   color: rgba(255, 255, 255, 0.7);
-  margin-bottom: var(--spacing-10);
-  max-width: 500px;
-  margin-left: 0;
+  margin-bottom: var(--spacing-16);
+  max-width: 600px;
+  margin-left: auto;
   margin-right: auto;
+  text-align: center;
   opacity: 0;
   transform: translateY(24px);
   transition: all var(--duration-500) var(--ease-out);
@@ -215,11 +191,11 @@
   transition-delay: 0.8s;
 }
 
-/* Action Buttons - Adjusted for logo layout */
+/* Action Buttons - Centered Clean Layout */
 .hero-actions {
   display: flex;
   gap: var(--spacing-4);
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   margin-bottom: var(--spacing-12);
   opacity: 0;
@@ -242,13 +218,13 @@
   letter-spacing: var(--letter-spacing-wide);
 }
 
-/* Stats - Adjusted for logo layout */
+/* Stats - Centered Layout */
 .hero-stats {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: var(--spacing-8);
-  margin-bottom: var(--spacing-12);
+  margin-bottom: var(--spacing-16);
   opacity: 0;
   transform: translateY(24px);
   transition: all var(--duration-500) var(--ease-out);
@@ -384,8 +360,8 @@
   }
   
   .hero-title-line {
-    font-size: 42px;
-    line-height: 42px;
+    font-size: 56px;
+    line-height: 56px;
   }
   
   .hero-subtitle {
@@ -433,9 +409,9 @@
   }
   
   .hero-title-line {
-    font-size: 40px;
-    line-height: 40px;
-    margin-bottom: 4px;
+    font-size: 48px;
+    line-height: 48px;
+    margin-bottom: 6px;
   }
   
   .hero-subtitle {
@@ -476,8 +452,8 @@
 
 @media (max-width: 480px) {
   .hero-title-line {
-    font-size: 32px;
-    line-height: 32px;
+    font-size: 36px;
+    line-height: 36px;
   }
   
   .hero-subtitle {
