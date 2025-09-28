@@ -1,0 +1,21 @@
+risk_thresholds:
+  low: 0.3
+  medium: 0.6
+  high: 0.8
+
+fusion_weights:
+  ml_weight: 0.6
+  rules_weight: 0.4
+
+model:
+  name: "guardian_transformer"
+  version: "1.0"
+  path: "./models/guardian_model.bin"
+
+database:
+  url: "sqlite:///./guardian.db"
+
+server:
+  host: "0.0.0.0"
+  port: 8000
+  reload: true
