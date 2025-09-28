@@ -19,7 +19,7 @@ class MessageClassification(BaseModel):
 '''----------------gemini setup and prompting----------------'''
 _llm = ChatGoogleGenerativeAI(
     temperature=0, 
-    model="gemini-2.5-flash", 
+    model="gemini-2.5-pro", 
     api_key=GEMINI_API_KEY)
 
 _prompt = ChatPromptTemplate.from_messages([
@@ -55,19 +55,6 @@ class MessageClassification(BaseModel):
     final_level: str
     action: str
 
-# ---------------- Gemini setup ----------------
-_llm = ChatGoogleGenerativeAI(
-    temperature=0, 
-    model="gemini-2.5-flash", 
-    api_key=GEMINI_API_KEY
-)
-
-_prompt = ChatPromptTemplate.from_messages([
-    ("system",
-     "You are an AI threat detector for analyzing text messages sent to children in a game chatting feature.\n"
-     "Return one of LOW|MEDIUM|HIGH as llm_risk based on the content of the message and a llm_confidence score from 0-1."),
-    ("human", "Classify the following message: {message}")
-])
 
 # ---------------- Test messages ----------------
 test_messages = [
