@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import MascotSection from './components/MascotSection';
 import DemoSection from './components/DemoSection';
+import AboutSection from './components/AboutSection';
 import FloatingVoiceWidget from './components/FloatingVoiceWidget';
 import './styles/globals.css';
 
@@ -26,6 +27,7 @@ function App() {
         <Hero />
         <MascotSection />
         <DemoSection />
+        <AboutSection />
       </main>
 
               {/* Floating Voice Widget */}
