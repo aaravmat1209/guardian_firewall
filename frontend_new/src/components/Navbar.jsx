@@ -31,28 +31,23 @@ const Navbar = ({ onGetStarted }) => {
         </div>
 
         {/* Navigation Links - EXACT Quantra spacing */}
-        <ul className="navbar-menu">
-          <li className="navbar-item">
-            <a href="#meet-guardian" className="navbar-link">
-              MASCOT
-            </a>
-          </li>
-          <li className="navbar-item">
-            <a href="#demo" className="navbar-link">
-              DEMO
-            </a>
-          </li>
-          <li className="navbar-item">
-            <a href="#features" className="navbar-link">
-              FEATURES
-            </a>
-          </li>
-          <li className="navbar-item">
-            <a href="#contact" className="navbar-link">
-              CONTACT
-            </a>
-          </li>
-        </ul>
+                <ul className="navbar-menu">
+                  <li className="navbar-item">
+                    <a href="#meet-guardian" className="navbar-link">
+                      MASCOT
+                    </a>
+                  </li>
+                  <li className="navbar-item">
+                    <a href="#demo" className="navbar-link">
+                      DEMO
+                    </a>
+                  </li>
+                  <li className="navbar-item">
+                    <a href="#about" className="navbar-link">
+                      ABOUT
+                    </a>
+                  </li>
+                </ul>
 
         {/* CTA Button - EXACT Quantra style */}
         <div className="navbar-actions">
@@ -83,12 +78,9 @@ const Navbar = ({ onGetStarted }) => {
             <li>
               <a href="#demo" onClick={toggleMobileMenu}>DEMO</a>
             </li>
-            <li>
-              <a href="#features" onClick={toggleMobileMenu}>FEATURES</a>
-            </li>
-            <li>
-              <a href="#contact" onClick={toggleMobileMenu}>CONTACT</a>
-            </li>
+                    <li>
+                      <a href="#about" onClick={toggleMobileMenu}>ABOUT</a>
+                    </li>
             <li>
               <button className="btn btn-primary" onClick={() => { onGetStarted(); toggleMobileMenu(); }}>
                 GET STARTED

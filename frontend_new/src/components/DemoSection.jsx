@@ -57,7 +57,7 @@ const DemoSection = () => {
           </div>
           
           <h2 className={`demo-section-title ${isVisible ? 'animate' : ''}`}>
-            GUARDIAN ANGEL DEMONSTRATION
+            GUARDIAN DEMONSTRATION
           </h2>
           <p className={`demo-section-subtitle ${isVisible ? 'animate' : ''}`}>
             Watch our AI mascot detect and prevent online threats

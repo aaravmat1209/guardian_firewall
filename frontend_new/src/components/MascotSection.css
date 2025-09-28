@@ -156,52 +156,6 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* Mascot Stats */
-.mascot-stats {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: var(--spacing-8);
-  margin-bottom: var(--spacing-12);
-  opacity: 0;
-  transform: translateY(24px);
-  transition: all var(--duration-500) var(--ease-out);
-}
-
-.mascot-stats.animate {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 1.6s;
-}
-
-.mascot-stat {
-  text-align: center;
-}
-
-.mascot-stat-number {
-  font-size: var(--font-size-4xl);
-  line-height: var(--line-height-4xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-red);
-  margin-bottom: var(--spacing-1);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-tight);
-}
-
-.mascot-stat-label {
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-sm);
-  font-weight: var(--font-weight-medium);
-  color: rgba(255, 255, 255, 0.6);
-  text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-wider);
-}
-
-.mascot-stat-divider {
-  width: 1px;
-  height: 40px;
-  background-color: rgba(255, 255, 255, 0.2);
-}
 
 /* Mascot Quote */
 .mascot-quote {
@@ -302,10 +256,6 @@
     line-height: var(--line-height-lg);
   }
   
-  .mascot-stats {
-    flex-direction: column;
-    gap: var(--spacing-6);
-  }
   
   .mascot-stat-divider {
     display: none;
@@ -349,7 +299,6 @@
   .mascot-section-subtitle,
   .mascot-display,
   .mascot-story-item,
-  .mascot-stats,
   .mascot-quote {
     animation: none;
     transition: none;
@@ -359,7 +308,6 @@
   .mascot-section-subtitle.animate,
   .mascot-display.animate,
   .mascot-story-item.animate,
-  .mascot-stats.animate,
   .mascot-quote.animate {
     opacity: 1;
     transform: none;
