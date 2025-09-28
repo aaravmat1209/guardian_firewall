@@ -135,11 +135,11 @@ class ChatRoom extends Room {
         const riskLevel = analysis.risk_level.toLowerCase();
         const riskScore = Math.round(analysis.confidence_score * 100);
 
-        // Create patterns from explanations
-        const patterns = analysis.explanations.map(explanation => ({
-          name: explanation.substring(0, 50) + (explanation.length > 50 ? '...' : ''),
-          severity: analysis.risk_level.toLowerCase()
-        }));
+        // Use actual detected patterns from Guardian AI
+        const patterns = analysis.patterns ? analysis.patterns.map(pattern => ({
+          name: pattern.name,
+          severity: pattern.severity
+        })) : [];
 
         // Update the actual message in state
         const message = this.state.messages.get(messageId);
