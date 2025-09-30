@@ -1,202 +1,177 @@
-<<<<<<< HEAD
-# Guardian AI
-
-A React-based child safety monitoring system for gaming chats, featuring advanced AI-powered threat detection and real-time content filtering.
-
-## Design System
-
-This application follows the design patterns inspired by [Quantra Security](https://quantra-security.webflow.io/) with our custom Guardian AI color scheme and branding.
-
-### Key Features
-
-- **Quantra-Inspired Design**: Modern, professional aesthetic with smooth animations
-- **Custom Color Scheme**: Red accent colors (#DC2626) on dark backgrounds
-- **Space Grotesk Typography**: Clean, geometric font matching Quantra's style
-- **Responsive Design**: Mobile-first approach with smooth transitions
-- **Advanced Animations**: Fade-in effects, hover states, and scroll-triggered animations
-
-### Color Palette
-
-```css
---color-black: #000000;
---color-dark: #0a0a0a;
---color-red: #DC2626;
---color-red-bright: #FF0000;
---color-white: #FFFFFF;
---color-gray: #E5E5E5;
---color-red-glow: rgba(220, 38, 38, 0.5);
---color-red-dim: rgba(220, 38, 38, 0.2);
-```
-
-## Getting Started
-
-### Prerequisites
-
-- Node.js (v14 or higher)
-- npm or yarn
-
-### Installation
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Start the development server:
-```bash
-npm start
-```
-
-3. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-### Available Scripts
-
-- `npm start` - Runs the app in development mode
-- `npm build` - Builds the app for production
-- `npm test` - Launches the test runner
-- `npm eject` - Removes the single build dependency
-
-## Project Structure
-
-```
-src/
-├── components/
-│   ├── Navbar.jsx
-│   └── Hero.jsx
-├── styles/
-│   ├── globals.css
-│   ├── Navbar.css
-│   └── Hero.css
-├── App.jsx
-└── index.js
-```
-
-## Components
-
-### Navbar
-- Fixed navigation with blur background
-- Guardian AI branding with red accent
-- Smooth hover animations
-- Mobile-responsive hamburger menu
-
-### Hero
-- Full viewport height with animated content
-- Quantra-style fade-up animations
-- Interactive mouse-tracking glow effect
-- Statistics display and call-to-action buttons
-
-## Design Implementation
-
-The design closely follows Quantra's aesthetic while maintaining Guardian AI's unique identity:
-
-- **Typography**: Space Grotesk font with uppercase headings and proper letter spacing
-- **Animations**: Smooth fade-in effects with staggered timing
-- **Layout**: Clean grid system with consistent spacing
-- **Interactive Elements**: Hover effects with glow and transform animations
-- **Color Usage**: Strategic use of red accents on dark backgrounds
-
-## Future Development
-
-This is the foundation for a comprehensive child safety monitoring platform. Future features will include:
-
-- Real-time chat monitoring dashboard
-- AI threat detection analytics
-- Content filtering controls
-- Safety reporting system
-- Parent/guardian notification center
-
-## License
-
-Private project for Guardian AI development.
-=======
 # Guardian Firewall
 
-Real-time grooming risk firewall for game chats
+Guardian Firewall is a comprehensive, real-time grooming risk firewall for live game chats. It monitors gaming conversations, detects grooming and predatory risks at the conversation level, and intervenes with safety pauses, inline highlights, and a guardian alert feed—all powered by a fusion of AI models and rule-based analysis.
 
-## Overview
+---
 
-Guardian monitors live game chats, detects grooming risk at the conversation level, and intervenes with safety pauses, inline highlights, and a guardian alert feed.
+## Table of Contents
 
-## Architecture
+- [Key Features](#key-features)
+- [Architecture Overview](#architecture-overview)
+- [Project Structure](#project-structure)
+- [Getting Started](#getting-started)
+  - [Backend](#backend)
+  - [Frontend](#frontend)
+- [Core Components](#core-components)
+- [API Endpoints](#api-endpoints)
+- [Tech Stack](#tech-stack)
+- [Future Roadmap](#future-roadmap)
+- [License](#license)
+
+---
+
+## Key Features
+
+- **Real-Time Multi-Turn Detection:** Combines transformer-based AI and precise rules to track risk escalation over conversations.
+- **Safety Pausing:** Intercepts risky messages and suggests safer alternatives.
+- **Guardian Portal:** Incident dashboard for real-time alerts and reporting.
+- **Inline Risk Highlighting:** Flags dangerous content directly in chat.
+- **Customizable Risk Thresholds:** Configure detection sensitivity via YAML.
+- **WebSocket-Powered Live Updates:** Instant risk feedback for users and moderators.
+
+---
+
+## Architecture Overview
 
 ```
 guardian_firewall/
 ├── backend/
-│   ├── app.py                 # FastAPI server with WebSocket, health endpoints, CORS
-│   ├── requirements.txt       # Dependencies (FastAPI, uvicorn, websockets)
+│   ├── app.py
+│   ├── requirements.txt
 │   ├── routes/
-│   │   └── classify.py        # Risk analysis API - /api/classify/message endpoint
+│   │   └── classify.py
 │   └── risk/
-│       ├── rules.py           # Grooming patterns - Age probing, secrecy, meeting requests
-│       ├── model.py           # ML wrapper - Placeholder for transformer model
-│       └── fuse.py            # Score fusion - Combines ML + rules → final risk level
-├── frontend/                  # React + Vite (ready for integration)
+│       ├── rules.py
+│       ├── model.py
+│       └── fuse.py
+├── frontend_new/                 # React + Vite (ready for integration)
 ├── models/
-│   └── config.yaml           # Thresholds & weights configuration
-└── .gitignore                # Excludes venv, __pycache__, node_modules, .env, etc.
+│   └── config.yaml
+├── chat-server.js
+├── PRESENTATION_SLIDES.md
+├── test_detector.py
+├── .gitignore
+└── README.md
 ```
 
-## Quick Start
+---
+
+## Project Structure
+
+- **backend/** — FastAPI server, WebSocket support, ML and rules-based risk detection.
+  - `app.py` — FastAPI app entrypoint, WebSocket routing, health checks.
+  - `requirements.txt` — Python dependencies.
+  - `routes/classify.py` — REST endpoints for message/conversation classification.
+  - `risk/rules.py` — Detects grooming patterns (e.g., age probing, secrecy).
+  - `risk/model.py` — ML model wrapper (plug in transformer or other models).
+  - `risk/fuse.py` — Score fusion (combines rules and ML for final risk assessment).
+- **frontend_new/** — Modern React (Vite) frontend for moderator and user interfaces.
+- **models/config.yaml** — Configurable risk thresholds, weights, and model settings.
+- **chat-server.js** — (Optional/legacy) Standalone chat server for testing.
+- **test_detector.py** — Python test suite for risk detection logic.
+- **PRESENTATION_SLIDES.md** — Project slides/documentation.
+
+---
+
+## Getting Started
 
 ### Backend
-```bash
-# Activate virtual environment and start backend
-cd backend
-source ../myvenv/bin/activate
-python3 -m uvicorn app:app --host 0.0.0.0 --port 8000 --reload
-```
+
+1. **Create a Python virtual environment** (optional but recommended):
+
+    ```bash
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+
+2. **Install dependencies:**
+
+    ```bash
+    cd backend
+    pip install -r requirements.txt
+    ```
+
+3. **Run the backend server:**
+
+    ```bash
+    uvicorn app:app --host 0.0.0.0 --port 8000 --reload
+    ```
 
 ### Frontend
-```bash
-# Install and run frontend
-cd frontend
-npm install
-npm run dev
-```
 
-## File Overview
+1. **Navigate to the frontend directory:**
 
-### 🔥 Core Backend (4 files)
-- `backend/app.py` - **FastAPI server** with WebSocket, health endpoints, CORS
-- `backend/requirements.txt` - **Dependencies** (FastAPI, uvicorn, websockets)
-- `backend/routes/classify.py` - **Risk analysis API** - `/api/classify/message` endpoint
+    ```bash
+    cd frontend_new
+    ```
 
-### 🧠 Risk Engine (3 files)
-- `backend/risk/rules.py` - **Grooming patterns** - Age probing, secrecy, meeting requests
-- `backend/risk/model.py` - **ML wrapper** - Placeholder for transformer model
-- `backend/risk/fuse.py` - **Score fusion** - Combines ML + rules → final risk level
+2. **Install dependencies:**
 
-### ⚙️ Config
-- `models/config.yaml` - **Thresholds & weights**
+    ```bash
+    npm install
+    ```
 
-### 🎨 Frontend
-- `frontend/` - **React + Vite** (ready for integration)
+3. **Run the development server:**
 
-## What Each Core File Does
+    ```bash
+    npm run dev
+    ```
 
-1. **`app.py`** - Starts server, handles WebSocket connections, processes chat messages
-2. **`rules.py`** - Detects grooming patterns: "how old are you?", "keep this secret", "meet up"
-3. **`fuse.py`** - Combines rule + ML scores → LOW/MEDIUM/HIGH risk + safety suggestions
-4. **`classify.py`** - REST API for frontend to send messages and get risk assessment
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## Core Components
+
+### Backend
+
+- **`app.py`** — Main FastAPI application, sets up API and WebSocket routes.
+- **`routes/classify.py`** — `/api/classify/message` and `/api/classify/conversation` endpoints for risk analysis.
+- **`risk/rules.py`** — Implements common grooming detection patterns (e.g., "how old are you?", "keep this secret", "let's meet").
+- **`risk/model.py`** — Integrate ML models for nuanced language detection.
+- **`risk/fuse.py`** — Fuses rule-based and ML outputs into a single risk score.
+
+### Frontend
+
+- **React + Vite** — Responsive dashboard for real-time alerts, chat monitoring, and moderation tools.
+
+### Models
+
+- **`models/config.yaml`** — Adjust risk levels, thresholds, and weights for different detection modules.
+
+---
 
 ## API Endpoints
 
-- `GET /health` - Health check
-- `GET /` - API status
-- `POST /api/classify/message` - Classify single message for risk
-- `POST /api/classify/conversation` - Analyze conversation patterns
-- `WS /ws` - WebSocket for real-time updates
+- `GET /health` — Server health check.
+- `GET /` — API status.
+- `POST /api/classify/message` — Classifies a single chat message for grooming/predatory risk.
+- `POST /api/classify/conversation` — Analyzes an entire conversation for escalation patterns.
+- `WS /ws` — Real-time WebSocket stream for live chat monitoring and feedback.
 
-## Features
-
-- 🔍 **Multi-turn Detection**: ML + precision rules track risk escalation
-- ⏸️ **Safety Pause**: Intercepts risky messages with safe alternatives
-- 📊 **Guardian Portal**: Real-time incident dashboard with platform reporting
+---
 
 ## Tech Stack
 
-- **Backend**: FastAPI + Python
-- **Frontend**: React + TypeScript + Vite
-- **Real-time**: WebSockets
-- **AI**: Transformer models + rule-based detection
->>>>>>> 012c98023ebff729f24c82772ca0731c415c9a94
+- **Backend:** Python, FastAPI, Uvicorn, WebSockets
+- **Frontend:** React, TypeScript, Vite
+- **ML/AI:** Transformer models (pluggable), rule-based NLP
+- **Config:** YAML for risk and model tuning
+
+---
+
+## Future Roadmap
+
+- **Full Dashboard:** Moderator tools, report center, analytics.
+- **Expanded AI:** Integrate more advanced language models.
+- **Custom Rules:** User-defined or organization-specific risk patterns.
+- **Notification Center:** Real-time alerts for parents/guardians.
+- **Plugin Support:** Extend detection for other chat/game platforms.
+
+---
+
+## License
+
+Private project for Guardian Firewall development.
+
+---
