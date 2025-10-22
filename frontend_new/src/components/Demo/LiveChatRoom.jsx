@@ -18,22 +18,45 @@ const LiveChatRoom = () => {
   const [currentExplanations, setCurrentExplanations] = useState([]);
   const [conversationTrend, setConversationTrend] = useState("stable");
   const messagesEndRef = useRef(null);
+  const chatMessagesRef = useRef(null);
+  const inputRef = useRef(null);
+  const [userScrolled, setUserScrolled] = useState(false);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Only scroll if input is not focused to prevent input jumping
+    if (document.activeElement !== inputRef.current) {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const checkIfScrolledToBottom = () => {
+    if (chatMessagesRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = chatMessagesRef.current;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10; // 10px tolerance
+      return isAtBottom;
+    }
+    return true;
+  };
+
+  const handleScroll = () => {
+    const isAtBottom = checkIfScrolledToBottom();
+    setUserScrolled(!isAtBottom);
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    // Only auto-scroll if user hasn't manually scrolled up
+    if (!userScrolled) {
+      scrollToBottom();
+    }
+  }, [messages, userScrolled]);
 
-  const connectToRoom = useCallback(async () => {
+  const connectToRoom = useCallback(async (username) => {
     try {
       if (room) {
         await room.leave();
       }
 
-      const newRoom = await client.joinOrCreate('chat_room', { username: currentUser });
+      const newRoom = await client.joinOrCreate('chat_room', { username: username || currentUser });
       setRoom(newRoom);
       setIsConnected(true);
 
@@ -90,15 +113,17 @@ const LiveChatRoom = () => {
         ));
       });
 
-      console.log('Connected to FortCraft Arena chat as', selectedUser);
+      console.log('Connected to FortCraft Arena chat as', username || currentUser);
     } catch (error) {
       console.error('Failed to connect:', error);
     }
-  }, [client, currentUser]);
+  }, [client]);
 
   const switchUser = (username) => {
     setSelectedUser(username);
     setCurrentUser(username);
+    // Reconnect with new username
+    connectToRoom(username);
   };
 
   const sendMessage = () => {
@@ -117,6 +142,9 @@ const LiveChatRoom = () => {
     setMessages(prev => [...prev, newMessage]);
     room.send('chat_message', { text: currentMessage });
     setCurrentMessage('');
+
+    // Reset scroll state so it scrolls to show your own message
+    setUserScrolled(false);
   };
 
   const handleKeyDown = (e) => {
@@ -127,10 +155,10 @@ const LiveChatRoom = () => {
   };
 
 
-  // Auto-connect on mount
+  // Auto-connect on mount only
   useEffect(() => {
     connectToRoom();
-  }, [connectToRoom]);
+  }, []);
 
   return (
     <div className="live-chat-room">
@@ -172,7 +200,11 @@ const LiveChatRoom = () => {
           </div>
 
           {/* Chat Messages */}
-          <div className="chat-messages">
+          <div
+            className="chat-messages"
+            ref={chatMessagesRef}
+            onScroll={handleScroll}
+          >
             {messages.length === 0 ? (
               <div className="chat-empty">
                 <div className="chat-empty-icon">💬</div>
@@ -200,8 +232,9 @@ const LiveChatRoom = () => {
           {/* Message Input */}
           <div className="chat-input">
             <div className="chat-input-field">
-              <input 
-                type="text" 
+              <input
+                ref={inputRef}
+                type="text"
                 placeholder={`Message as ${currentUser}...`}
                 value={currentMessage}
                 onChange={(e) => setCurrentMessage(e.target.value)}

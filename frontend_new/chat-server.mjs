@@ -141,9 +141,6 @@ class ChatRoom extends Room {
           severity: pattern.severity
         })) : [];
 
-        console.log('🔍 DEBUG - Full Guardian AI Response:', JSON.stringify(analysis, null, 2));
-        console.log('🔍 DEBUG - Extracted patterns:', JSON.stringify(patterns, null, 2));
-
         // Update the actual message in state
         const message = this.state.messages.get(messageId);
         if (message) {
@@ -152,7 +149,7 @@ class ChatRoom extends Room {
         }
 
         // Broadcast Guardian AI analysis update
-        const updateData = {
+        this.broadcast("guardian_ai_update", {
           messageId: messageId,
           riskLevel: riskLevel,
           riskScore: riskScore,
@@ -162,10 +159,7 @@ class ChatRoom extends Room {
           action: analysis.action,
           conversationTrend: analysis.conversation_risk_trend || "stable",
           shouldPause: riskLevel === "high"
-        };
-
-        console.log('🔍 DEBUG - Broadcasting update:', JSON.stringify(updateData, null, 2));
-        this.broadcast("guardian_ai_update", updateData);
+        });
 
         console.log(`Guardian AI Real Analysis: ${riskLevel} (${riskScore}%) - Action: ${analysis.action}`);
         console.log(`🎯 Patterns detected: ${patterns.map(p => p.name).join(', ') || 'None'}`);
